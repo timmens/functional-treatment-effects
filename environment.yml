@@ -1,0 +1,13 @@
+name: functional-treatment-effects
+
+channels:
+  - conda-forge
+  - nodefaults
+
+dependencies:
+  - python==3.10
+  - pip
+
+  - pip:
+    - git+git://github.com/timmens/fte.git
+    - -e .

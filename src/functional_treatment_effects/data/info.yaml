@@ -1,0 +1,50 @@
+_general_info:
+    n_obs: 120
+
+
+strike_index:
+    comment: Strike index measurements for different shoe types.
+    index:
+        - shoe_type
+        - id
+    variables:
+        shoe_type: Shoe name. Barefoot is encoded as 'bare'.
+        id: Subject identification.
+        strike_index:
+            Position of the foot that first touches the floor while running.\
+            Heel is encoded as 0, toes as 1.
+
+
+subject_information:
+    comment: Additional information on subjects.
+    index:
+        - id
+    variables:
+        id: Subject identification.
+        name: Last name of subject.
+        gender: Gender of subject. Encoded as 'female' and 'male'.
+        foot_shape:
+            Malformation of foot. Values are 'normal', 'senk', 'senk-spreiz' and \
+            'hohl'.
+        age: Age of subject. Measured in years.
+        weekly_km: Weekly km the subject runs.
+        running_years: Number of years the subject has been running for.
+        toe_flex_strength: Flex strength of subject toes. Measured in Nm/kg.
+        plantar_flex_strength: Flex strength of subject plantar. Measured in Nm/kg.
+        knee_exten_strength: Flex strength of subject knree. Measured in Nm/kg.
+        lever_knee: Lever of knee. Measured in cm.
+
+
+ankle_moments:
+    comment: Functional data of ankle moments (outcomes).
+    index:
+        - shoe_type
+        - variable
+        - id
+    variables:
+        shoe_type: Shoe name. Barefoot is encoded as 'bare'.
+        variable: Dimensions that are measures 'x' and 'y'.
+        id: Subject identification.
+        _other:
+            Columns 0 until 200 denote measurements of the variable at respective time \
+            points.

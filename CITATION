@@ -1,0 +1,6 @@
+@Unpublished{Mensinger2022,
+    Title  = {Functional Treatment Effects},
+    Author = {Tim Mensinger},
+    Year   = {2022},
+    Url    = {https://github.com/timmens/functional-treatment-effects}
+}

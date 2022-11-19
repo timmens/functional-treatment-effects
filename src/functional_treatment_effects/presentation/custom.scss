@@ -1,0 +1,62 @@
+/* @theme custom */
+
+@import 'gaia';
+
+section {
+    background: white;
+    font-size: 35px;
+}
+
+
+h3 {
+    font-size: 50px;
+}
+
+pre {
+    line-height: 1.15;
+    overflow: visible;
+
+    background: #f6f8fa;
+    background-color: #f6f8fa;
+
+    border: 0.1em solid #d0d7de;
+    border-radius: 6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+
+    line-height: 1.45;
+    overflow: auto;
+    padding: 16px;
+}
+
+section code {
+    color: #24292f;
+    background: white;
+}
+
+
+section.split {
+    overflow: visible;
+    display: grid;
+    grid-template-columns: 550px 550px;
+    grid-template-rows: 60px auto;
+    grid-template-areas:
+        "slideheading slideheading"
+        "leftpanel rightpanel";
+}
+section.split h3 {
+    grid-area: slideheading;
+    font-size: 50px;
+}
+
+section.split .leftcol {
+    grid-area: leftpanel;
+    padding: 0px 10px 0px 0px;
+}
+section.split .rightcol {
+    grid-area: rightpanel;
+    padding: 0px 0px 0px 10px;
+
+}
