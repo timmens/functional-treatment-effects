@@ -8,6 +8,16 @@ dependencies:
   - python==3.10
   - pip
 
+  # Computation
+  - numpy
+  - pandas
+
+  # Plotting
+  - matplotlib
+  - plotly
+  - python-kaleido
+
   - pip:
-    - git+git://github.com/timmens/fte.git
+    - git+https://github.com/timmens/fte.git
+    - git+https://github.com/timmens/pytask-markdown.git
     - -e .

@@ -1,9 +1,9 @@
 import pandas as pd
 import pytask
-from functional_treatment_effects.confidence_bands.bands import estimate_confidence_band
+from fte.confidence_bands.bands import estimate_confidence_band
+from fte.fitting.fitting import get_fitter
 from functional_treatment_effects.config import BLD
 from functional_treatment_effects.data_management import INDEX_COLS
-from functional_treatment_effects.fitting.fitting import get_fitter
 
 
 fit_func_on_scalar = get_fitter(fitter="func_on_scalar")
@@ -24,9 +24,8 @@ def task_fit_model(depends_on, produces):
     y = pd.read_csv(depends_on["y"], index_col=y_index_cols)
     y = y.query("variable == 'x'")
 
-    coef = fit_func_on_scalar(x=x, y=y, fit_intercept=True)
-
-    coef.to_csv(produces)
+    res = fit_func_on_scalar(x=x, y=y, fit_intercept=True)
+    res["slopes"].to_csv(produces)
 
 
 @pytask.mark.depends_on(
@@ -62,11 +61,14 @@ def task_fit_doubly_robust(depends_on, produces):
 
     res = fit_doubly_robust(x=x, y=y, t=t)
 
+    effect = res["treatment_effect"]
     band = estimate_confidence_band(
-        res["effect"].values.flatten(), res["kernel"] / 10, n_samples=112, n_points=201
+        estimate=effect.values.flatten(),
+        cov=res["cov"] / len(y),
+        n_samples=len(y),
+        numerical_options={"raise_error": False},
     )
 
-    effect = res["effect"]
     effect["lower"] = band.lower
     effect["upper"] = band.upper
     effect["estimate"] = band.estimate

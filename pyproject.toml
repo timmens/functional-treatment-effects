@@ -3,11 +3,12 @@ requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.0"]
 
 
 [tool.setuptools_scm]
-write_to = "src/functional-treatment-effects/_version.py"
+write_to = "src/functional_treatment_effects/_version.py"
 
 
 [tool.pytask.ini_options]
-paths = "./src/functional-treatment-effects"
+paths = "./src/functional_treatment_effects"
+infer_latex_dependencies = false
 
 
 [tool.interrogate]
