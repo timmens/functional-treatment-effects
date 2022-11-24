@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 DATA_SETS = ["ankle_moments", "strike_index", "subject_information"]
@@ -35,7 +36,7 @@ def create_tidy_ankle_moments(df):
     return tidy
 
 
-def create_strike_indicator(strike_index, *, cutoff):
+def create_strike_indicator(strike_index: pd.DataFrame, *, cutoff: float):
     strike_indicator = (strike_index >= cutoff).astype(np.int64)
     strike_indicator = strike_indicator.rename(
         columns={"strike_index": "strike_indicator"}
