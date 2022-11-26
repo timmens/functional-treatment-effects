@@ -11,11 +11,11 @@ from functional_treatment_effects.plotting.plotting import plot_functional_sampl
 
 @pytask.mark.depends_on(
     {
-        "data": BLD.joinpath("data/bare/tidy_ankle_moments.csv"),
-        "colors": BLD.joinpath("data/bare/strike_indicator.csv"),
+        "data": BLD.joinpath("data", "bare", "tidy_ankle_moments.csv"),
+        "colors": BLD.joinpath("data", "bare", "strike_indicator.csv"),
     }
 )
-@pytask.mark.produces(BLD.joinpath("figures/bare/ankle_moments_y.png"))
+@pytask.mark.produces(BLD.joinpath("figures", "bare", "ankle_moments_y.png"))
 def task_plot_sample(depends_on, produces):
     index_cols = list(set(INDEX_COLS["ankle_moments"]) - {"shoe_type"})
     df = pd.read_csv(depends_on["data"], index_col=index_cols)
@@ -29,8 +29,8 @@ def task_plot_sample(depends_on, produces):
     fig.write_image(produces)
 
 
-@pytask.mark.depends_on(BLD.joinpath("models/bare/coef.csv"))
-@pytask.mark.produces(BLD.joinpath("figures/bare/coef.png"))
+@pytask.mark.depends_on(BLD.joinpath("models", "bare", "coef.csv"))
+@pytask.mark.produces(BLD.joinpath("figures", "bare", "coef.png"))
 def task_plot_coef(depends_on, produces):
     df = pd.read_csv(depends_on, index_col=["time"])
     fig = plot_df_with_time_axis(df)
@@ -39,11 +39,11 @@ def task_plot_coef(depends_on, produces):
 
 @pytask.mark.depends_on(
     {
-        "data": BLD.joinpath("data/bare/tidy_ankle_moments.csv"),
-        "strike_indicator": BLD.joinpath("data/bare/strike_indicator.csv"),
+        "data": BLD.joinpath("data", "bare", "tidy_ankle_moments.csv"),
+        "strike_indicator": BLD.joinpath("data", "bare", "strike_indicator.csv"),
     }
 )
-@pytask.mark.produces(BLD.joinpath("figures/presentation/data.png"))
+@pytask.mark.produces(BLD.joinpath("figures", "presentation", "data.png"))
 def task_plot_data_presentation(depends_on, produces):
     indicator = pd.read_csv(depends_on["strike_indicator"])
 
