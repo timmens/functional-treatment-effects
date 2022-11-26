@@ -6,8 +6,32 @@ channels:
 
 dependencies:
   - python==3.10
+  - ipython
   - pip
 
+  # Computation
+  - numpy
+  - pandas
+
+  # Plotting
+  - matplotlib
+  - plotly
+  - python-kaleido
+
+  # Workflow
+  - pytask
+
+  # Testing and Linting
+  - black
+  - pre-commit
+  - pytest
+  - pytest-cov
+  - pytest-xdist
+  - tox-conda
+  - pdbpp
+
+
   - pip:
-    - git+git://github.com/timmens/fte.git
+    - git+https://github.com/timmens/fte.git
+    - git+https://github.com/timmens/pytask-markdown.git
     - -e .

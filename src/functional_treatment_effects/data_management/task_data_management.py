@@ -3,18 +3,18 @@ import pytask
 from functional_treatment_effects.config import BLD
 from functional_treatment_effects.config import SRC
 from functional_treatment_effects.data_management import create_strike_indicator
-from functional_treatment_effects.data_management import create_tidy_ankle_moments
 from functional_treatment_effects.data_management import DATA_SETS
 from functional_treatment_effects.data_management import filter_by_shoe_type
 from functional_treatment_effects.data_management import INDEX_COLS
 from functional_treatment_effects.data_management import SHOE_TYPES
+from functional_treatment_effects.data_management import tidy_up_ankle_moments
 
 
-@pytask.mark.depends_on(SRC.joinpath("data/ankle_moments.csv"))
-@pytask.mark.produces(BLD.joinpath("data/tidy_ankle_moments.csv"))
+@pytask.mark.depends_on(SRC.joinpath("data", "ankle_moments.csv"))
+@pytask.mark.produces(BLD.joinpath("data", "tidy_ankle_moments.csv"))
 def task_create_tidy_ankle_moments(depends_on, produces):
     df = pd.read_csv(depends_on, index_col=INDEX_COLS["ankle_moments"])
-    df_tidy = create_tidy_ankle_moments(df)
+    df_tidy = tidy_up_ankle_moments(df)
     df_tidy.to_csv(produces)
 
 
