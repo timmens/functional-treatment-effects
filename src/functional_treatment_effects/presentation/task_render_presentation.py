@@ -24,7 +24,7 @@ dependencies = {f.name: f for f in src_figures + bld_figures}
         options=[
             "--html",  # allows html code in markdown files
             "--allow-local-files",
-            f"--theme-set {str(SRC.joinpath('presentation', 'custom.scss'))}",
+            f"--theme-set {SRC.joinpath('presentation', 'custom.scss')}",
             # use custom scss file
         ]
     ),
