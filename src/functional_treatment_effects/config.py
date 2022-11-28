@@ -7,4 +7,6 @@ ROOT = SRC.joinpath("..", "..").resolve()
 BLD = ROOT.joinpath("bld").resolve()
 PUBLIC = BLD.joinpath("public").resolve()
 
+SHOE_TYPE = "bare"
+
 __all__ = ["BLD", "PUBLIC", "SRC", "ROOT"]
