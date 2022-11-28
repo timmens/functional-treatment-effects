@@ -20,14 +20,8 @@ dependencies = {f.name: f for f in src_figures + bld_figures}
 @pytask.mark.markdown(
     script=SRC.joinpath("presentation", "main.md"),
     document=BLD.joinpath("presentation", "main.pdf"),
-    compilation_steps=cs.marp(
-        options=[
-            "--html",  # allows html code in markdown files
-            "--allow-local-files",
-            f"--theme-set {SRC.joinpath('presentation', 'custom.scss')}",
-            # use custom scss file
-        ]
-    ),
+    css=SRC.joinpath("presentation", "custom.scss"),
+    compilation_steps=cs.marp(options=["--html", "--allow-local-files"]),
 )
 @pytask.mark.depends_on(dependencies)
 def task_render_presentation():
