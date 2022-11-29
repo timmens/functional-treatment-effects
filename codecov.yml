@@ -15,7 +15,11 @@ coverage:
         target: 60%
 
 ignore:
-  - ".tox/**/*"
+  # specific files
   - "release.py"
   - "setup.py"
-  - "tests/**/*"
+  - "**/__init__.py"
+  - "**/task_*.py"
+  # specific folders
+  - ".tox"
+  - "tests"
