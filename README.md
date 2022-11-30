@@ -11,11 +11,14 @@
 This is the companion repository to the working paper *Causal Inference with Functional
 Data* by [Tim Mensinger](https://www.tmensinger.com) and
 [Dominik Liebl](https://www.dliebl.com/). It contains all necessary scripts to reproduce
-dependencies of the presentation and paper, and to render the presentation itself ---we
+dependencies of the presentation and paper, and to render the presentation itself --we
 are also working on automizing the compilation of the paper itself.
 
-In the following we will explain how to use this repository to reproduce the results. If
-you have any questions please contact Tim via email: `tmensinger[at]uni-bonn.de`.
+In the following we will explain how to use this repository to reproduce the results.
+
+## Contact
+
+If you have any questions please contact Tim via email: `tmensinger[at]uni-bonn.de`.
 
 ## Build
 
@@ -58,8 +61,8 @@ scripts in the correct order.
 > ```console
 > conda activate functional-treatment-effects
 > ```
-
-otherwise you won't have access to the installed packages.
+>
+> otherwise you won't have access to the installed packages.
 
 ### Results
 
