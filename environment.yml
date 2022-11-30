@@ -33,5 +33,5 @@ dependencies:
 
   - pip:
     - git+https://github.com/timmens/fte.git
-    - git+https://github.com/timmens/pytask-markdown.git@quarto
+    - git+https://github.com/timmens/pytask-markdown.git
     - -e .
