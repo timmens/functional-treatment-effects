@@ -1,41 +1,68 @@
 # FUNCTIONAL TREAMENT EFFECTS
 
-> Tim Mensinger & Dominik Liebl
+[![main](https://github.com/timmens/functional-treatment-effects/actions/workflows/main.yml/badge.svg)](https://github.com/timmens/functional-treatment-effects/actions/workflows/main.yml)
+[![image](https://codecov.io/gh/timmens/functional-treatment-effects/branch/main/graph/badge.svg)](https://codecov.io/gh/timmens/functional-treatment-effects)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/timmens/functional-treatment-effects/main.svg)](https://results.pre-commit.ci/latest/github/timmens/functional-treatment-effects/main)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Repo Size](https://img.shields.io/github/repo-size/timmens/functional-treatment-effects)
 
-## Development Repository
+## Repository Information
 
-The companion repository to the working paper *Fair Causal Inference with Functional
-Data* is found at
-[timmens/functional-treatment-effects](https://github.com/timmens/functional-treatment-effects).
+This is the companion repository to the working paper *Causal Inference with Functional
+Data* by [Tim Mensinger](https://www.tmensinger.com) and
+[Dominik Liebl](https://www.dliebl.com/). It contains all necessary scripts to reproduce
+dependencies of the presentation and paper, and to render the presentation itself ---we
+are also working on automizing the compilation of the paper itself.
 
-## References
+In the following we will explain how to use this repository to reproduce the results. If
+you have any questions please contact Tim via email: `tmensinger[at]uni-bonn.de`.
 
-##### Causal Inference and Econometrics
+## Build
 
-- Chernozhukov (2018). The Econometrics Journal:
-  [Double/debiased machine learning for treatment and structural parameters](https://academic.oup.com/ectj/article/21/1/C1/5056401)
-- Robins, Rotnitzky and Zhao (1994). Journal of the American Statistical Association:
-  [Estimation of Regression Coefficients When Some Regressors Are Not Always Observed](https://www.jstor.org/stable/2290910#metadata_info_tab_contents)
-- Robins and Rotnitzky (1995). Journal of the American Statistical Association:
-  [Semiparametric Efficiency in Multivariate Regression Models with Missing Data](https://www.jstor.org/stable/2291135#metadata_info_tab_contents)
-- Scharfstein, Rotnitzky and Robins (1999). Journal of the American Statistical
-  Association:
-  [Adjusting for Nonignorable Drop-Out Using Semiparametric Nonresponse Models](https://www.tandfonline.com/doi/abs/10.1080/01621459.1999.10473862)
-- Rosenbaum and Rubin (1983). Biometrika:
-  [The central role of the propensity score in observational studies for causal effects](https://academic.oup.com/biomet/article/70/1/41/240879)
-- Jinyong Hahn (1998). Econometrica:
-  [On the Role of the Propensity Score in Efficient Semiparametric Estimation of Average Treatment Effects](https://www.jstor.org/stable/2998560)
-- Wager (2020). Stats 361:
-  [Causal inference](https://web.stanford.edu/~swager/stats361.pdf)
+In the following we explain how to reproduce the results on your machine.
 
-##### Functional Data
+### Environment
 
-- Liebl and Reimherr (2022). Book chapter in *Contributions to Statistics. Springer*:
-  [Fast and Fair Simultaneous Confidence Bands for Functional Parameters](https://arxiv.org/abs/1910.00131)
-- Telshow and Schwartzman (2022). Journal of Statistical Planning and Inference:
-  [Simultaneous Confidence Bands for Functional Data Using the Gaussian Kinematic Formula](https://www.sciencedirect.com/science/article/abs/pii/S0378375821000598)
+To reproduce this repository we require you to have Python and several other libraries
+installed. A full list of requirements is provided in the
+[environment.yml](./environment.yml) file. If you have these requirements installed you
+can go to the next subsection. The easiest way to automatically install these packages
+is to use the package manager conda, which you can install
+[here](https://docs.conda.io/en/latest/miniconda.html). Once installed, open a shell and
+execute
 
-## Contact
+```console
+$ cd /to/project/root
+$ conda env create -f environment.yml
+$ conda activate functional-treatment-effects
+```
 
-- Email: [tmensinger\[at\]uni-bonn.de](mailto:tmensinger@uni-bonn.de)
-- Website: [tmensinger.com](tmensinger.com)
+This installs the required packages into a specific environment, which avoids messing up
+your local Python installation.
+
+### pytask
+
+Once the environment is installed and activated you can `cd` into the project root and
+build the project by executing
+
+```console
+$ pytask
+```
+
+The [`pytask`](https://github.com/pytask-dev/pytask) command executes all necessary
+scripts in the correct order.
+
+> **Note** Every time you reopen the shell you have to activate the environment again
+> using
+>
+> ```console
+> conda activate functional-treatment-effects
+> ```
+
+otherwise you won't have access to the installed packages.
+
+### Results
+
+After running `pytask` you will find a new folder named `bld`. All created files can be
+found there. Specifically you'll find figures in `bld/figures/` and the presentation in
+`bld/presentation`.
