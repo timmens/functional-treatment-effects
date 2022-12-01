@@ -1,0 +1,441 @@
+\section{Model}
+
+In this section we discuss two modeling frameworks. First, we describe the standard
+function-on-scalar regression model, and how to compute simultaneous confidence bands
+for the estimated parameter functions. In this context we define robust covariance
+function estimators, that work under heteroskedasticity. Second, we introduce a causal
+inference framework for the case of functional outcomes, scalar regressors and a binary
+treatment. In this setting we define a treatment effect function that we estimate using
+a doubly robust approach. We derive simultaneous confidence bands for the augmented
+inverse propensity score weighted estimator of the average treatment effect.
+
+\subsection{Standard Regression Model}
+
+The linear function-on-scalar regression model is given by
+\[
+    y_i(t) = x_i^\top \beta(t) + \varepsilon_i(t), \quad t \in [0, 1], \quad i =
+    1,\dots,n \,,
+\]
+with continuous functional response $y_i \in C^1([0, 1])$, covariates $x_i \in
+\mathbb{R}^p$ and continuous mean-zero error process $\varepsilon_i \in C^1([0, 1])$.
+The objects of interest are the parameter functions $\beta(t) = (\beta_1(t), \dots,
+\beta_p(t))^\top$.  Note that we can rescale $t$ to be in $[0, 1]$ without loss of
+generality if the original space is bounded.
+
+In this paper we assume that the samples $(y_i, x_i)$ are independent across $i =
+1,\dots, n$, and that the functions $y_i$ are fully observed, i.e.  observed at all time
+points $t \in [0, 1]$. Extending the methods developed in this paper to the case of
+autocorrelated samples is a great avenue for future research.
+
+For any fixed time point $t \in [0, 1]$, the model can be seen as a standard regression
+model. The OLS estimator is then $\hat{\beta}(t) = (X^\top X)^{-1}X^\top y(t)$, where we
+write $y = (y_1, \dots, y_n)^\top$ and $X = (x_1, \dots, x_n)^\top$. Under standard
+regulatory assumptions we get
+\[
+    \sqrt{n}(\hat{\beta}(t) - \beta(t)) \to_d \mathcal{N}(0, C(t)) \,,
+\]
+for some covariance $C(t)$. To utilize the results from Theorem \ref{thm:main_theorem}
+we not only require point-wise convergence, but convergence of the whole process.
+
+\begin{assumption}
+    \label{ass:ols_process_convergence}
+    [...] list assumption that ols process convergences to Gaussian process [...]
+\end{assumption}
+
+\begin{theorem}
+    Let $\hat{\beta} = \{\hat{\beta}(t) : t \in [0, 1]\}$ be the OLS estimator process.
+    Under Assumption \ref{ass:ols_process_convergence} we get
+    \[
+        \sqrt{n}(\hat{\beta} - \beta) \to_d \mathcal{GP}(0, C_\beta) \,,
+    \]
+    for some covariance function $C_\beta : [0, 1]^2 \to \mathbb{R}^{p \times p}$.
+\end{theorem}
+\begin{proof}
+    To be written.
+\end{proof}
+
+\subsubsection{Covariance estimation}
+
+To compute the simultaneous confidence bands in practice we need to estimate $C_\beta$.
+In particular, we will construct an estimator $\hat{C}_\beta$ of $C_\beta$ that fulfills
+Assumption \ref{ass:estimator_assumptions}. We can then use the method of
+\cite{liebl2021} to get a valid simultaneous confidence band by Theorem
+\ref{thm:main_theorem}. Let us start by analyzing the components of the asymptotic
+covariance function $C_\beta$.
+
+Define $Z(t) = \sqrt{n}(\hat{\beta}(t) - \beta(t))$ and note that by plugging in for $y$
+we get $Z(t) = \sqrt{n}(X^\top X)^{-1}X^\top \varepsilon(t)$, with $\varepsilon(t) =
+(\varepsilon_1(t), \dots, \varepsilon_n(t))^\top$. Then
+\begin{align*}
+    \text{Cov}(Z(s), Z(t) | X)
+    &= \mathbb{E}[Z(s) Z(t)^\top | X]\\
+    &= n (X^\top X)^{-1} X^\top \mathbb{E}[\varepsilon(s)\varepsilon(t)^\top | X] X
+    (X^\top X)^{-1}\\
+    &= n (X^\top X)^{-1} X^\top D X (X^\top X)^{-1}\\
+    &= (X^\top X / n)^{-1} (X^\top D X / n) (X^\top X / n)^{-1}
+\end{align*}
+with $D = \text{diag}(\sigma_1(s, t), \dots, \sigma_n(s, t))$ where $\sigma_i(s, t) =
+\mathbb{E}[\varepsilon_i(s) \varepsilon_i(t) | x_i]$. What we do next depends on what we
+want to assume about the dependency between $\varepsilon_i$ and $x_i$.
+
+\paragraph{Homoskedasticity}
+
+If we assume that $\mathbb{E}[\varepsilon_i(s) \varepsilon_i(t) | x_i] =
+\mathbb{E}[\varepsilon_i(s) \varepsilon_i(t)] = \sigma(s, t)$ the expression simplifies,
+since then $D = \sigma(s, t) \mathbb{I}_n$, and thus
+\[
+    \text{Cov}(Z(s), Z(t) | X) = \sigma(s, t) (X^\top X / n)^{-1} \,.
+\]
+A consistent estimator for $\sigma(s, t)$ is e.g. $\hat{\sigma}(s, t) = \sum_{i=1}^n
+\varepsilon_i(s) \varepsilon_i(t) / n$, and hence we can estimate $C_\beta$ by
+\[
+    \hat{C}_\beta(s, t) = \hat{\sigma}(s, t) (X^\top X / n)^{-1} \,,
+\]
+for $s, t \in [0, 1]$. Written more compactly as $\hat{C}_\beta = (X^\top X / n)^{-1}
+\otimes \hat{\sigma}$.
+
+\begin{proposition}{}
+    [...] show that the estimator satisfies all the assumptions we need [...]
+\end{proposition}
+
+\paragraph{Heteroskedasticity}
+
+Now assume that $\mathbb{E}[\varepsilon_i(s) \varepsilon_i(t) | x_i] \neq
+\mathbb{E}[\varepsilon_i(s) \varepsilon_i(t)]$ in general. Define the model residuals by
+$\hat{\varepsilon}(t) = y(t) - x^\top \hat{\beta}(t)$. In line with the classical
+literature on heteroskedasticity-consistent covariance estimation we estimate $X^\top D
+X / n$ by replacing $D$ with $\text{diag}(\hat{\sigma}_1(s, t), \dots, \hat{\sigma}_n(s,
+t))$ where $\hat{\sigma}_i(s, t) = \hat{\varepsilon}_i(s) \hat{\varepsilon}_i(s)$. The
+heteroskedasticity-consistent covariance estimator is then given by
+\[
+    \hat{C}_\beta(s, t)^{\text{HC0}} = (X^\top X / n)^{-1} ( \frac{1}{n}
+    \sum_{i=1}^n x_i x_i^\top \hat{\varepsilon}_i(s) \hat{\varepsilon}_i(t) )
+    (X^\top X / n)^{-1},
+\]
+for $s, t \in [0, 1]$. Written more compactly as
+\[
+    \hat{C}_\beta^{\text{HC0}} = (X^\top X / n)^{-1} ( \frac{1}{n} \sum_{i=1}^n x_i
+    x_i^\top \otimes \hat{\sigma}_i ) (X^\top X / n)^{-1}.
+\]
+Note that HC stands for "heteroskedasticity-consistent" and 0 refers to this being a
+baseline estimator. In the Appendix we list formulas for the cases HC1, HC2 and HC3,
+which are in line with the definitions of the classical data case, see e.g.
+\cite{hansen_econometrics_book}.
+
+\begin{proposition}{}
+    [...] show that the estimator satisfies all the assumptions we need [...]
+\end{proposition}
+
+
+\subsection{Utilizing the regression structure}
+
+Idea: Because now we know more about the structure of the covariance function, we can
+improve the estimate of the roughness parameter function by utilizing this additional
+structure.
+
+
+\subsection{Causal Inference Framework}
+
+The following is taken from Stefan Wager's lecture notes on Causal Inference. I have
+adapted his notes to the case of a functional potential outcome.
+
+We observe data $(X_i, Y_i, W_i) \in \mathcal{X} \times L^2[0, 1] \times \{0, 1\}$
+according to the potential outcomes model, such that there are potential outcomes
+$\{Y_i(0), Y_i(1)\}$ for which $Y_i = Y_i(Wi)$ (SUTVA). Note that each potential outcome
+represents a function in $L^2[0, 1]$. We are not necessarily in a randomized controlled
+trial; however, we assume unconfoundedness, i.e., that treatment assignment is as good
+as random conditionally on the features $X_i$:
+\begin{align}
+    (Y_i(0), Y_i(1)) &\perp W_i \mid X_i
+\end{align}
+We seek to estimate the average treatment effect function $\tau(t) =
+\mathbb{E}[Y_i(1)(t) - Y_i(0)(t)]$, for $t \in [0, 1]$.
+Throughout, we write
+\begin{align}
+    \sigma_w(x)(s, t) &= cov(Y_i(w)(s), Y_i(w)(t) \mid X_i = x),
+\end{align}
+so that $\sigma_w(x)$ refers to the covariance kernel of the potential outcome $Y_i(w)$
+conditional that $X_i = x$.
+
+Two characterizations of the ATE Last time, we saw that the ATE can
+be characterized in terms of the propensity score $e(x) = P[W_i = 1 \mid X_i = x]$:
+
+\begin{align*}
+    \tau(t) = \mathbb{E}[\hat{\tau}_{IPW}^\ast(t)], \quad \hat{\tau}_{IPW}^\ast(t) =
+    \frac{1}{n} \sum_{i=1}^n (\frac{W_i Y_i(t)}{e(X_i)} - \frac{(1 - W_i)Y_i(t)}{1
+    - e(X_i)})
+\end{align*}
+
+However, $\tau$ can also be characterized in terms of the conditional response surfaces
+$\mu_{(w)}(x)(t) = \mathbb{E}[Y_i(w)(t) \mid X_i = x]$. Under unconfoundedness (3.1),
+
+\begin{align*}
+    \tau(x)(t) :&= \mathbb{E}[Y_i(1)(t) - Y_i(0)(t) \mid X_i = x]\\
+    &= \mathbb{E}[Y_i(1)(t) \mid X_i = x] - \mathbb{E}[Y_i(0)(t) \mid X_i = x]\\
+    &= \mathbb{E}[Y_i(1)(t) \mid X_i = x, W_i = 1] - \mathbb{E}[Y_i(0)(t) \mid X_i = x, W_i = 0] \quad (\text{unconf.})\\
+    &= \mathbb{E}[Y_i(t) \mid X_i = x, W_i = 1] - \mathbb{E}[Y_i(t) \mid X_i = x, W_i = 0] \quad (\text{sutva})\\
+    &= \mu_{(1)}(x)(t) - \mu_{(0)}(x)(t)
+\end{align*}
+
+and so $\tau(t) = \mathbb{E}[\mu_{(1)}(x)(t) - \mu_{(0)}(x)(t)]$. Thus we could also
+derive a consistent (but not necessarily optimal) estimator for $\tau$ by first
+estimating $\mu_{(0)}(x)$ and $\mu_{(1)}(x)$ non-parametrically, and then using
+$\hat{\tau}_{REG}(t) = n^{-1} \sum_{i = 1}^n = (\hat{\mu}_{(1)}(X_i)(t) -
+\hat{\mu}_{(0)}(X_i)(t))$.
+
+\paragraph{Augmented IPW}
+
+Given that the average treatment effect can be estimated in two different ways, i.e., by
+frst non-parametrically estimating $e(x)$ or by first estimating $\mu_{(0)}(x)$ and
+$\mu_{(1)}(x)$, it is natural to ask whether it is possible to combine both strategies.
+This turns out to be a very good idea, and yields the augmented IPW (AIPW) estimator of
+Robins, Rotnitzky, and Zhao [1994]:
+\begin{align}
+    \hat{\tau}_{AIPW}(t) = \frac{1}{n} \sum_{i=1}^n &(
+    \hat{\mu}_{(1)}(X_i)(t) - \hat{\mu}_{(0)}(X_i)(t) +\\
+    &W_i \frac{Y_i(t) - \hat{\mu_{(1)}(X_i)(t)}}{\hat{e}(X_i)} -
+    (1 - W_i) \frac{Y_i(t) - \hat{\mu_{(0)}(X_i)(t)}}{1 - \hat{e}(X_i)}
+    ).
+\end{align}
+Qualitatively, AIPW can be seen as frst making a best effort attempt at $\tau$ by
+estimating $\mu_{(0)}(x)$ and $\mu_{(1)}(x)$; then, it deals with any biases of the
+$\hat{\mu}_{(w)}(x)$ by applying IPW to the regression residuals.
+
+\paragraph{Double robustness} Consider the lecture notes of Wager.
+
+\paragraph{Semiparametric effciency}
+
+The more important property of AIPW is that it is asymptotically optimal among all
+non-parametric estimators in a strong sense. Provided we estimate $\mu(w)(x)$ and $e(x)$
+in a reasonably accurate way (and we'll discuss specific conditions under which this
+holds in just a minute), one can show that $\hat{\tau}_{AIPW}$ is to frst order
+equivalent to the oracle AIPW estimator
+\begin{align}
+    \hat{\tau}_{AIPW}^\ast(t) = \frac{1}{n} \sum_{i=1}^n &(
+    \mu_{(1)}(X_i)(t) - \mu_{(0)}(X_i)(t) +\\
+    &W_i \frac{Y_i(t) - \mu_{(1)}(X_i)(t)}{e(X_i)} -
+    (1 - W_i) \frac{Y_i(t) - \mu_{(0)}(X_i)(t)}{1 - e(X_i)}
+    ),
+\end{align}
+meaning that, for all $t \in [0, 1]$
+\begin{align}
+    \sqrt{n} (\hat{\tau}_{AIPW}(t) - \hat{\tau}_{AIPW}^\ast(t)) \to_p 0.
+\end{align}
+
+Now, $\hat{\tau}_{AIPW}$ is just an IID average, so we immediately see that, for all $t
+\in [0, 1]$
+\begin{align}
+    &\sqrt{n} (\hat{\tau}_{AIPW}^\ast(t) - \tau(t)) \to_d \mathcal{N}(0, V^\ast(t))\\
+    &V^\ast(t) = Var(\tau(X_i)(t)) + \mathbb{E}[\frac{\sigma_1(X_i)(t, t)}{e(X_i)}] +
+    \mathbb{E}[\frac{\sigma_0(X_i)(t, t)}{1 - e(X_i)}]
+\end{align}
+and so whenever (3.5) holds $\hat{\tau}_{AIPW}$ also satisfes a CLT as in (3.6).
+Furthermore, it turns out that the behavior (3.6) is asymptotically optimal, in the
+sense that no "regular" estimator of $\tau$ can improve on the behavior in (3.6). This
+result is a Cramer-Rao type bound for non-parametric average treatment effect estimation
+
+\paragraph{AIPW and cross-fitting}
+
+When choosing which treatment effect estimator to use in practice, we want to attain
+performance as in (3.6) and so need to make sure that (3.5) holds. To this end, consider
+the following minor modification of AIPW using cross-fitting. At a high level,
+cross-fitting uses cross-fold estimation to avoid bias due to overfitting; the reason
+why this works is exactly the same as why we want to use cross-validation when
+estimating the predictive accuracy of an estimator. Cross-fitting first splits the data
+(at random) into two halves $\mathcal{I}_1$ and $\mathcal{I}_2$, and then uses an
+estimator
+
+\begin{align}
+\hat{\tau}_{AIPW}(t) &= \frac{|\mathcal{I}_1|}{n} \hat{\tau}^{\mathcal{I}_1}(t) +
+    \frac{|\mathcal{I}_2|}{n} \hat{\tau}^{\mathcal{I}_2}(t)\\
+    \hat{\tau}^{\mathcal{I}_1}(t) &= \frac{1}{|\mathcal{I}_1|} \sum_{i\in\mathcal{I}_1}
+    (\hat{\mu}_{(1)}^{\mathcal{I}_2}(X_i)(t) - \hat{\mu}_{(0)}^{\mathcal{I}_2}(X_i)(t))\\
+    + &W_i \frac{Y_i(t) -
+    \hat{\mu}_{(1)}^{\mathcal{I}_2}(X_i)(t)}{\hat{e}^{\mathcal{I}_2}(X_i)} - (1 - W_i)
+    \frac{Y_i(t) - \mu_{(0)}^{\mathcal{I}_1}(X_i)(t)}{1 - \hat{e}^{\mathcal{I}_2}(X_i)}
+\end{align}
+
+where the $\hat{\mu}^{\mathcal{I}_2}_{(w)}$ and $\hat{e}^{\mathcal{I}_2}$ are estimates
+of $\mu_{(w)}$ and $e$ obtained using only the half-sample $\mathcal{I}_2$, and
+$\hat{\tau}^{\mathcal{I}_2}$ is defined analogously (with the roles of $\mathcal{I}_1$
+and $\mathcal{I}_2$ swapped). In other words, $\hat{\tau}^{\mathcal{I}_1}$ is a
+treatment effect estimator on $\mathcal{I}_1$ that uses $\mathcal{I}_2$ to estimate its
+nuisance components, and vice-versa. This cross-estimation construction allows us to,
+asymptotically, ignore the idiosyncrasies of the specific machine learning adjustment we
+chose to use, and to simply rely on the following high-level conditions:
+
+\begin{enumerate}
+    \item \textbf{Overlap:} The true propensity score is bounded away from 0 and 1, such
+    that there exists $\eta > 0$ with $\eta < e(x) < 1 - \eta$ for all $x \in \chi$.
+    \item \textbf{Consistency:} All machine learning adjustments are sup-norm
+    consistent, such that for all $t \in [0, 1]$
+    \begin{align}
+        &\sup_{x \in \chi} \mid \hat{\mu}_{(w)}^{\mathcal{I}_2}(x)(t) - \mu_{(w)}(x)(t)
+        \mid \to_p 0\\
+        &\sup_{x \in \chi} \mid \hat{e}^{\mathcal{I}_2}(x) - e(x) \mid \to_p 0
+    \end{align}
+    \item \textbf{Risk decay:} The product of the errors for the outcome and propensity
+    models decays as
+    \begin{align}
+        \mathbb{E}[(\hat{\mu}_{(w)}^{\mathcal{I}_2}(x)(t) - \mu_{(w)}(x)(t))^2] \times
+        \mathbb{E}[(\hat{e}^{\mathcal{I}_2}(x) - e(x))^2] = o(\frac{1}{n})
+    \end{align}
+    for all $t \in [0, 1]$.
+\end{enumerate}
+where the randomness above is taken over both the training of
+$\hat{\mu_{(w)}}^{\mathcal{I}_2}$ and $\hat{e}^{\mathcal{I}_2}$ and the test example
+$X$. Note that if $\hat{\mu}_{(w)}^{\mathcal{I}_2}$ and $\hat{e}^{\mathcal{I}_2}$ both
+attained the parametric "$\sqrt{n}$-consistent" rate, then the error product would be
+bounded as $o(1/n^2)$. A simple way to satisfy this condition is to have all regression
+adjustments be $o(n^{-1/4})$ consistent in root-mean squared error (RMSE).
+
+Note that none of these conditions depend on the internal structure of the machine
+learning method used. Moreover, (3) depends on the mean-squared error of the risk
+adjustments, and so justifes tuning the $\hat{\mu}_{(w)}$ and $\hat{e}$. estimates via
+cross-validation. Given these assumptions, we characterize the cross-fitting estimator
+(3.7) by coupling it with the oracle effcient score estimator (3.4), i.e., for all
+$t \in [0, 1]$
+\begin{align}
+    \sqrt{n} (\hat{\tau}_{AIPW}(t) - \tau^\ast(t)) \to_p 0
+\end{align}
+
+To do so, we first note that we can write
+\begin{align}
+    \hat{\tau}^\ast(t) = \frac{|\mathcal{I}_1|}{n} \hat{\tau}^{\mathcal{I}_1, \ast} +
+    \frac{|\mathcal{I}_2|}{n} \hat{\tau}^{\mathcal{I}_2, \ast}
+\end{align}
+
+analogously to (3.7) (because $\hat{\tau}^\ast$ uses oracle nuisance components, the
+cross-fitting construction doesn't change anything for it). Moreover, we can decompose
+$\hat{\tau}^{\mathcal{I}_1}$ itself as
+\begin{align}
+   \hat{\tau}^{\mathcal{I}_1}(t) &= \hat{\mu}_{(1)}^{\mathcal{I}_1}(t) -
+    \hat{\mu}_{(0)}^{\mathcal{I}_1}(t),\\
+   \hat{\mu}_{(0)}^{\mathcal{I}_1}(t) &= \frac{1}{|\mathcal{I}_1|} \sum_{i \in
+    \mathcal{I}_1} (\hat{\mu}_{(1)}^{\mathcal{I}_2}(X_i)(t) + W_i \frac{Y_i(t) -
+    \hat{\mu}_{(1)}^{\mathcal{I}_2}(X_i)(t)}{\hat{e}^{\mathcal{I}_2}(X_i)}),
+\end{align}
+etc., and define $\hat{\mu}_{(w)}^{\mathcal{I}_1, \ast}$ analogously. Given this
+buildup, in order to verify (3.9), it suffices to show that, for all $t \in [0, 1]$
+\begin{align}
+    \sqrt{n} (\hat{\mu}_{(1)}^{\mathcal{I}_1}(t) - \hat{\mu}_{(1)}^{\mathcal{I}_1,
+    \ast}(t)) \to_p 0
+\end{align}
+etc., across folds and treatment statuses.
+We now study the term in (3.11) by decomposing it as follows:
+\begin{align*}
+    &\hat{\mu}_{(1)}^{\mathcal{I}_1}(t) - \hat{\mu}_{(1)}^{\mathcal{I}_1,\ast}(t)\\
+    &= \frac{1}{|\mathcal{I}_{1}|} \sum_{i \in
+    \mathcal{I}_{1}}(\hat{\mu}_{(1)}^{\mathcal{I}_{2}}(X_{i})(t)+W_{i}
+    \frac{Y_{i}(t)-\hat{\mu}_{(1)}^{\mathcal{I}_{2}}(X_{i})(t)}{\hat{e}^{\mathcal{I}_{2}}(X_{i})}-\mu_{(1)}(X_{i})(t)-W_{i}
+    \frac{Y_{i}(t)-\mu_{(1)}(X_{i})(t)}{e(X_{i})}) \\
+    &= \frac{1}{|\mathcal{I}_{1}|} \sum_{i \in
+    \mathcal{I}_{1}}((\hat{\mu}_{(1)}^{\mathcal{I}_{2}}(X_{i})(t)-\mu_{(1)}(X_{i})(t))(1-\frac{W_{i}}{e(X_{i})}))\\
+    & \quad+\frac{1}{|\mathcal{I}_{1}|} \sum_{i \in \mathcal{I}_{1}}
+    W_{i}((Y_{i}(t)-\mu_{(1)}(X_{i})(t))(\frac{1}{\hat{e}^{\mathcal{I}_{2}}(X_{i})}-\frac{1}{e(X_{i})}))
+    \\
+    & \quad-\frac{1}{|\mathcal{I}_{1}|} \sum_{i \in \mathcal{I}_{1}}
+    W_{i}((\hat{\mu}_{(1)}^{\mathcal{I}_{2}}(X_{i})(t)-\mu_{(1)}(X_{i})(t))(\frac{1}{\hat{e}^{\mathcal{I}_{2}}(X_{i})}-\frac{1}{e(X_{i})}))
+\end{align*}
+
+
+
+NOW THE PROOF CONTINUES
+
+
+\paragraph{Condensed notation}
+
+We will be encountering cross-fit estimators frequently in this class. From now on,
+we'll use the following notation: We define the data into $K$ folds (above, $K=2$), and
+compute estimators $\hat{\mu}_{(w)}^{-k}(x)(t)$ etc., excluding the $k$-th fold. Then,
+writing $k(i)$ as the mapping that takes an observation and puts it into one of the $k$
+folds, we can write
+\begin{align}
+    \hat{\tau}_{AIPW}(t) = \frac{1}{n} \sum_{i=1}^n &\hat{\mu}_{(1)}^{-k(i)}(X_i)(t) -
+    \hat{\mu}_{(0)}^{-k(i)}(X_i)(t)\\
+    &+ W_i \frac{Y_i(t) - \hat{\mu}_{(1)}^{-k(i)}(X_i)(t)}{\hat{e}^{-k(i)}(X_i)} - (1 -
+    W_i) \frac{Y_i(t) - \hat{\mu}_{(0)}^{-k(i)}(X_i)(t)}{1 - \hat{e}^{-k(i)}(X_i)},
+\end{align}
+which (almost) fits on one line.
+
+
+\paragraph{Confidence intervals}
+
+It is also important to be able to quantify uncertainty of treatment effect estimates.
+Cross-fitting also makes this easy. Recall from last class that the empirical variance
+of the effcient score converges to the effcient variance $V^\ast(t)$ for all $t \in [0,
+1]$:
+\begin{align}
+    \frac{1}{n - 1} &\sum_{i = 1}^n (\mu_{(1)}(X_i)(t) - \mu_{(0)}(X_i)(t)\\
+    &+ W_i \frac{Y_i(t) - \mu_{(1)}(X_i)(t)}{e(X_i)} - (1 - W_i) \frac{Y_i(t) -
+    \mu_{(0)}(X_i)(t)}{1- e(X_i)} - \hat{\tau}^\ast(t))^2\\
+    &\to_p V^\ast(t)
+\end{align}
+where $\hat{\tau}^\ast$ is as in (3.4). Our previous derivation then establishes that
+the same holds for cross-fitting: $\hat{V}_{AIPW}(t) \to_p V^\ast(t)$, where
+\begin{align}
+    \hat{V}_{AIPW} &:= \frac{1}{n - 1} \sum_{i = 1}^n
+    (\hat{\mu}_{(1)}^{(-k(i))}(X_i)(t) - \hat{\mu}_{(0)}^{(-k(i))}(X_i)(t)\\
+    + &W_i \frac{Y_i(t) - \hat{\mu}_{(1)}^{(-k(i))}(X_i)(t)}{e(X_i)} - (1 - W_i)
+    \frac{Y_i(t) - \hat{\mu}_{(0)}^{(-k(i))}(X_i)(t)}{1- e(X_i)} -
+    \hat{\tau}_{AIPW}(t))^2\\
+    &\to_p V^\ast(t)
+\end{align}
+
+We can thus produce level-$\alpha$ confidence intervals for $\tau$ as
+\begin{align}
+    \tau \in (\hat{\tau}_{AIPW} \pm \frac{1}{\sqrt{n}} \Phi^{-1}(1 -
+    \frac{\alpha}{2})\sqrt{\hat{V}_{AIPW}(t)}),
+\end{align}
+where $\Phi$ is the standard Gaussian CDF, and these will achieve coverage with
+probability $1-\alpha$ in large samples. Similar argument can also be used to justify
+inference via resampling methods as in Efron [1982].
+
+\paragraph{Bibliographic references}
+
+The literature on semiparametrically effcient treatment effect estimation via AIPW was
+pioneered by Robins, Rotnitzky, and Zhao [1994], and developed in a sequence of papers
+including Robins and Rotnitzky [1995] and Scharfstein, Rotnitzky, and Robins [1999]. The
+effect of knowing the propensity score on the semiparametric effciency bound for average
+treatment effect estimation is discussed in Hahn [1998], while the behavior of AIPW with
+high dimensional regression adjustments was first considered by Farrell [2015]. These
+results fit into a broader literature on semiparametrics, including Bickel, Klaassen,
+Ritov, and Wellner [1993] and Newey [1994]. The approach taken here, with a focus on
+generic machine learning estimators for nuisance components and cross-fitting, follows
+Chernozhukov et al. [2018a]. One major strength of this approach is in its generality
+and its ability to handle arbitrary nuisance estimators; however, the risk decay
+condition (3.8) is somewhat loose. There has been considerable recent interest in
+sharper analyses of AIPW that rely on specific choices of $\hat{\mu}_{(w)}$ and
+$\hat{e}$ to attain efficiency under the most general conditions possible, including
+work by Kennedy [2020] and Newey and Robins [2018]. Finally, one should note that AIPW
+is far from the only practical average treatment effect estimator that can attain
+semiparametric effciency. One notable alternative to AIPW is targeted learning [van der
+Laan and Rubin, 2006], which can also be instantiated via machine learning based
+nuisance estimators and cross-fitting [van der Laan and Rose, 2011]. In the case of
+high-dimensional linear modeling, Belloni, Chernozhukov, and Hansen [2014] proposed a
+doubleselection algorithm for choosing which variables to control for.
+
+
+\subsubsection{Uniform convergence}
+
+In order to utilize Theorem \ref{thm:main_theorem} we require a result of the form
+\begin{align}
+    \sqrt{n} (\hat{\tau}_{AIPW} - \tau) \to_d \mathcal{GP}(0, C_\tau).
+\end{align}
+Above we have seen that, for all $t \in [0, 1]$
+\begin{align}
+    \sqrt{n} (\hat{\tau}_{AIPW}(t) - \tau(t)) \to_d \mathcal{N}(0, V^\ast(t)).
+\end{align}
+Which identifies the diagonal of $C_\tau$; however, we want to derive the full
+structure.
+
+\newpage
+
+\subsection{Structure}
+
+\begin{align}
+    \hat{\theta}(t) &= \frac{1}{n} \sum_{i = 1}^n f(X_i(t), Y_i(t))\\
+    \mathbb{E}[f(X_i(t), Y_i(t))] &= 0\\
+    \sigma(s, t) &:= \mathbb{E}[f(X_i(s), Y_i(s)) \times f(X_i(t), Y_i(t))]\\
+    \sqrt{n} \hat{\theta} &\to_d \mathcal{GP}(0, \sigma) ?
+\end{align}

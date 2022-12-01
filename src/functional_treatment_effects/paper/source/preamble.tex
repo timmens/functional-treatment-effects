@@ -1,0 +1,98 @@
+% packages
+
+%% math
+\usepackage{amsthm,amsmath}
+\usepackage{amsfonts,amsbsy,amssymb}
+\usepackage{bbm}
+\usepackage{mathtools}
+
+%% bibliography
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+\addbibresource{bibliography.bib}
+
+%% others
+\usepackage{graphicx}
+\usepackage{lipsum}
+\usepackage{epstopdf}
+\usepackage{comment}
+\usepackage{array}
+\usepackage{color}
+\usepackage{booktabs}
+\usepackage{todonotes}
+\usepackage{ragged2e}
+\usepackage{hyperref}
+\usepackage[affil-it]{authblk}
+
+%% font
+\usepackage{newpxtext}
+\usepackage{newpxmath}
+
+%% local package
+% \usepackage{texmf/imsart}
+
+
+% theorems styles and math operators
+
+%% theorems
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{assumption}{Assumption}[section]
+\newtheorem*{remark}{Remark}
+
+%% operators
+\DeclareMathOperator{\myspan}{span}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\Prob}{\mathbb{P}}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\V}{\mathbb{V}}
+\DeclareMathOperator{\supp}{supp}
+
+%% colorbox within equation-environments
+\newcommand{\highlight}[2][yellow]{\mathchoice%
+  {\colorbox{#1}{$\displaystyle#2$}}%
+  {\colorbox{#1}{$\textstyle#2$}}%
+  {\colorbox{#1}{$\scriptstyle#2$}}%
+  {\colorbox{#1}{$\scriptscriptstyle#2$}}}%
+
+
+% auxiliary options
+
+%% colors
+\definecolor{blue}{RGB}{4, 83, 156}  % hex: #04539C
+\definecolor{gray}{RGB}{148, 147, 132}  % hex: #8A9384
+\definecolor{yellow}{RGB}{251, 187, 6}  % hex: #FBBB06
+\definecolor{red}{RGB}{165, 42, 42}  % hex: #A52A2A
+
+%% hyperref
+\hypersetup{colorlinks=true, citecolor=blue, urlcolor=blue}
+
+%% local definitions
+% \startlocaldefs
+% \endlocaldefs
+
+%% arxiv
+%% % provide arXiv number if available:
+%% %\arxiv{arXiv:0000.0000}
+
+
+%% title page
+\title{
+    Causal Inference with Functional Data\\
+    \vspace{1cm}
+    \setlength\fboxrule{2pt}
+    \fcolorbox{red}{white}{\Large Working Paper: Please do not cite!}
+}
+\date{Version: \today}
+
+\author[1]{Tim Mensinger}
+\author[2]{Dominik Liebl}
+
+\affil[1, 2]{Institute of Finance and Statistics, University of Bonn}
