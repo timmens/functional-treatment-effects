@@ -11,9 +11,8 @@
 This is the companion repository to the working paper *Causal Inference with Functional
 Data* by [Tim Mensinger](https://www.tmensinger.com) and
 [Dominik Liebl](https://www.dliebl.com/). It contains all necessary scripts to reproduce
-dependencies of the presentation and paper, and to render the presentation itself --we
-are also working on automizing the compilation of the paper itself. We explain how to do
-this in the section [Build](#build).
+the dependencies of the presentation and paper, and to render (compile) the presentation
+(paper) itself. We explain how to do this in the section [Build](#build).
 
 ## Contact
 

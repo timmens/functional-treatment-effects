@@ -1,0 +1,109 @@
+\section{Introduction}
+
+
+\subsection{Motivation and literature review}
+
+\begin{center}
+[... insert motivation and literature review here ...]
+\end{center}
+
+\subsection{Notation}
+
+Let $\to_p$ denote convergence in probability, $\to_d$ convergence in distribution,
+$\mathcal{N}(m, C)$ the (multivariate) normal distribution with mean $m \in
+\mathbb{R}^p$ and covariance $C \in \mathbb{R}^{p \times p}$, $\mathcal{GP}(m, C)$ the
+distribution of a Gaussian process with mean function $m:[0, 1] \to \mathbb{R}$ and
+covariance function $C:[0, 1]^2 \to (0, \infty)$.
+
+
+\subsection{Simultaneous Confidence Bands}
+
+In the following we introduce a set of assumptions required by a functional estimator
+that allow for the computation of simultaneous confidence bands. For this we utilize the
+methods developed in \cite{liebl2021}. The following results require that the estimator
+is asymptotically Gaussian, which we state in Assumption
+\ref{ass:asymptotically_gaussian_estimator}.
+
+\begin{assumption}
+    \label{ass:asymptotically_gaussian_estimator}
+    Suppose $\hat{\theta}$ is an estimator of the process $\theta = \{\theta(t) : t \in
+    [0, 1]\}$ such that
+    \begin{align*}
+        \sqrt{n}(\hat{\theta} - \text{Bias}(\hat{\theta}) - \theta) \to_d
+        \mathcal{GP}(0, C_\theta) \,,
+    \end{align*}
+    for some covariance function $C_\theta$.
+\end{assumption}
+
+Before we state the main theorem concerning the simultaneous confidence bands we define
+the roughness parameter function and simultaneous confidence bands.
+
+\begin{definition}
+    \label{def:roughness_parameter_function}
+    Consider the setup of Assumption \ref{ass:asymptotically_gaussian_estimator} and let
+    $\tilde{C}_\theta(s, t) = {C_\theta(s, t)}/{\sqrt{C_\theta(s, s) C_\theta(t, t)}}$.
+    Define the roughness parameter function\footnote{In \cite{liebl2021} the roughness
+    parameter function is denoted by $\tau(t)$. We use $r(t)$ here because $\tau(t)$
+    denotes our treatment effect function in section 2.?.}
+    \[
+        r(t) = (\partial_{1,2}\tilde{C}_\theta(t, t))^{-1/2} \,,
+    \]
+    which quantifies the extent of the local multiple testing problem.
+\end{definition}
+
+\begin{definition}
+    \label{ass:simultaneous_confidence_band}
+    Consider any confidence level $\alpha \in (0, 1)$. The two-dimensional random
+    function $\text{SCB}_\alpha(t) = (\theta_\ell(t), \theta_u(t))$ is a correctly sized
+    simultaneous confidence band for the parameter $\theta(t)$ if
+    \[
+        \mathbb{P}(\forall t \in [0, 1]: \theta(t) \in [\theta_\ell(t), \theta_u(t)])
+        \geq 1 - \alpha \,.
+    \]
+\end{definition}
+
+Using the roughness parameter function $r(t)$ the method of \cite{liebl2021} allows us
+to compute a \textcolor{red}{fair} threshold function (critical value function)
+$u_\alpha(t)$, depending on the confidence level $\alpha \in (0, 1)$. Theorem
+\ref{thm:scb_for_estimator} states that using this threshold function leads to a valid
+simultaneous confidence band.
+
+\begin{theorem}
+    \label{thm:scb_for_estimator}
+    Let $u_\alpha(t)$ be a threshold function computed by Algorithm 1 from
+    \cite{liebl2021} using the roughness parameter function $r(t)$. Let $\alpha \in (0,
+    1)$ denote a confidence level and set $\text{SCB}_\alpha(t) = (\hat{\theta}_\ell(t),
+    \hat{\theta}_u(t))$ for all $t \in [0, 1]$, with
+    \begin{align*}
+        \hat{\theta}_\ell(t) &= \hat{\theta}(t) - u_\alpha(t) \sqrt{C_\theta(t, t) /
+        n}\\
+        \hat{\theta}_u(t) &= \hat{\theta}(t) + u_\alpha(t) \sqrt{C_\theta(t, t) / n} \,.
+    \end{align*}
+    Then $\text{SCB}_\alpha$ constitutes a valid simultaneous confidence band.
+\end{theorem}
+\begin{proof}
+    See Section 2.4.1, Example 1 in \cite{liebl2021}.
+\end{proof}
+
+
+Until now we assumed to know the roughness parameter function and the covariance
+function. Under the following assumptions we can extend the result of Theorem
+\ref{thm:scb_for_estimator} to the practically more relevant case where both $r(t)$ and
+$C_\theta$ are estimated from data.
+
+\begin{assumption}
+    \label{ass:estimator_assumptions}
+    Here I need to state a set of general assumption on the estimates that allow us to
+    extend Theorem \ref{thm:scb_for_estimator}.
+\end{assumption}
+
+\begin{theorem}
+    \label{thm:main_theorem}
+    Consider the setup of Theorem \ref{thm:scb_for_estimator}, but using estimates
+    $\hat{r}(t)$ and $\hat{C}_\theta$ for $r(t)$ and $C_\theta$, respectively. Under
+    assumption \ref{ass:estimator_assumptions} the simultaneous confidence band
+    $\text{SCB}_\alpha$ is still valid.
+\end{theorem}
+\begin{proof}
+    To be written.
+\end{proof}

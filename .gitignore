@@ -1,8 +1,24 @@
-# bld/data
+# pytask
 bld
+.pytask.sqlite3
+.pytask
+_version.py
+pdfs
 
+# files
 *.html
 *.pdf
+
+# latex
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.run.xml
+*.synctex.gz
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -148,15 +164,8 @@ coverage.*
 _build
 __pycache__
 _generated
-
-*.egg-info
-.eggs
-
-.pytask.sqlite3
-
 build
 dist
 
-.pytask
-_version.py
-pdfs
+*.egg-info
+.eggs
