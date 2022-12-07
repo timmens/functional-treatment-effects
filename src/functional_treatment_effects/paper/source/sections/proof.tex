@@ -1,0 +1,148 @@
+\section{Theory and Proofs}
+
+
+\begin{definition}
+    A mean-zero process $X = \{X(t) : t \in [0, 1]\}$ is said to be $f$-H\"older
+    continuous if
+    \[
+        \mathbb{E}\left[(X(s) - X(t))^2 \right] \leq f(|s - t|)
+    \]
+    for small $|s-t|$.
+\end{definition}
+
+
+\begin{definition}
+    We say a function $f: [0, 1] \to \mathbb{R}$ satisfies the integral condition A
+    (ICA) if
+    \[
+        \int_0^\infty y^{-3/2} \sqrt{f(y)} \, dy < \infty.
+    \]
+\end{definition}
+
+\begin{definition}
+    If there exists a function $f$ that is non-negative and non-decreasing in a
+    neighborhood around 0, such that $X$ is $f$-H\"older continuous and $f$ satisfies
+    the ICA, then we say $X$ satisfies the ICA.
+\end{definition}
+
+
+\begin{proposition}
+    Let $X$ be a mean-zero process with stationary kernel, i.e. there is a function
+    $\tilde{c} : [0, 1] \to \mathbb{R}$ such that $\mathbb{E}[X(s) X(t)] = \tilde{c}(|s
+    - t|)$ for all $s, t$. Then $X$ satisfies the ICA if and only if $2 (\tilde{c}(0) -
+    \tilde{c})$ satisfies the ICA.
+\end{proposition}
+\begin{proof}
+    Notice that
+    \begin{align}
+        \mathbb{E}\left[(X(s) - X(t))^2\right]
+        &= \mathbb{E}\left[X(s)^2 + X(t)^2 - 2 X(s) X(t)\right] \\
+        &= \mathbb{E}[X(s)^2] + \mathbb{E}[X(t)^2] - 2 \mathbb{E}[X(s) X(t)] \\
+        &= 2 (\tilde{c}(0) - \tilde{c}(|s - t|)).
+    \end{align}
+    Suppose now that $X$ satisfies the ICA. Then, by the definition of the ICA, there is
+    a function $f$ such that $X$ is $f$-H\"older and that $f$ satisfies the ICA. We also
+    know that $2 (\tilde{c}(0) - \tilde{c}) \leq f$. Therefore, also $2 (\tilde{c}(0) -
+    \tilde{c})$ satisfies the ICA. Conversely, suppose that $2 (\tilde{c}(0) -
+    \tilde{c})$ satisfies the ICA. Then, $X$ satisfies the ICA using $2 (\tilde{c}(0) -
+    \tilde{c})$ as $f$.
+\end{proof}
+
+\begin{proposition}\label{prop:lipschitz}
+    Let $f$ be a nonnegative function on $[0, 1]$ that is non-decreasing in a
+    neighborhood of $0$. Let $X$ be a $f$-H\"older continuous process. If $f$ satisfies
+    the ICA, then there exists a non-decreasing continuous function $\phi$ on $[0, 1]$
+    with $\phi(0) = 0$, which depends only on $f$, and a real-valued random variable $A$
+    such that
+    \[
+        |X(s) - X(t)| \leq A \phi(|s - t|) \,.
+    \]
+\end{proposition}
+\begin{proof}
+    The claim follows directly from Theorem 2.3 in \cite{hahn1977} with $r = 2$.
+\end{proof}
+
+
+\begin{theorem}\label{thm:fclt}
+    Let $X_1, \dots, X_n$ be independent mean-zero processes following the same
+    distribution as $X$. Suppose that $\mathbb{E}[X(t)^2] < \infty$ for all $t$, and
+    that $X$ satisfies the ICA, and has $C^1[0, 1]$ sample paths almost surely. Then,
+    \[
+        \frac{1}{\sqrt{n}} \sum_{i = 1}^n X_i(t) \overset{d}{\to} \mathcal{GP}(0, c)
+        \quad \text{in} \, C^1[0, 1],
+    \]
+    with $c(s, t) = \mathbb{E}[X(s) X(t)]$.
+\end{theorem}
+\begin{proof}
+    This follows directly by Theorem 2.5 in \cite{hahn1977}.
+\end{proof}
+
+
+\begin{theorem}\label{thm:uniform-convergence-kernel}
+    Let $X_1, \dots, X_n$ be independent mean-zero processes following the same
+    distribution as $X$. Suppose that $X$ satisfies the ICA and let $\hat{c}(s, t) =
+    \frac{1}{n} \sum_{i = 1}^n X_i(s) X_i(t)$. Then,
+    \begin{align}
+        || \hat{c} - c ||_\infty &\overset{p}{\to} 0 \\
+        || \partial_{1, 2}\hat{c} - \partial_{1, 2}c ||_\infty &\overset{p}{\to} 0
+    \end{align}
+    where $|| \cdot ||_\infty$ is the supremum norm.
+\end{theorem}
+\begin{proof}
+    \emph{First claim.}
+    Let $s, t, s', t' \in [0, 1]$. Let $A_1, \dots, A_n$ and $\phi$ be the random
+    variables and function from Proposition \ref{prop:lipschitz}, respectively. We have
+    \begin{align}
+        |\frac{1}{n} &\sum_{i = 1}^n X_i(s) X_i(t) - \frac{1}{n} \sum_{i = 1}^n X_i(s') X_i(t')| \\
+        &\leq |\frac{1}{n} \sum_{i = 1}^n (X_i(s) - X_i(s')) X_i(t) + (X_i(t) - X_i(t')) X_i(s')| \\
+        &\leq \frac{1}{n} \sum_{i = 1}^n |X_i(s) - X_i(s')| |X_i(t)| + \frac{1}{n} \sum_{i = 1}^n |X_i(t) - X_i(t')| |X_i(s')| \\
+        &\leq \sqrt{\frac{1}{n} \sum_{i = 1}^n |X_i(s) - X_i(s')|^2} \sqrt{\frac{1}{n} \sum_{i = 1}^n |X_i(t)|^2} + \sqrt{\frac{1}{n} \sum_{i = 1}^n |X_i(t) - X_i(t')|^2} \sqrt{\frac{1}{n} \sum_{i = 1}^n |X_i(s')|^2} \\
+        &\leq \sqrt{\frac{1}{n} \sum_{i = 1}^n |X_i(s) - X_i(s')|^2} \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t |X_i(t)|^2} + \sqrt{\frac{1}{n} \sum_{i = 1}^n |X_i(t) - X_i(t')|^2} \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t |X_i(t)|^2} \\
+        &= \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t X_i(t)^2} \left[\sqrt{\frac{1}{n}\sum_{i = 1}^n |X_i(s) - X_i(s')|^2} + \sqrt{\frac{1}{n}\sum_{i = 1}^n |X_i(s) - X_i(t')|^2} \right] \\
+        &\leq \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t X_i(t)^2} \left[\sqrt{\frac{1}{n}\sum_{i = 1}^n A_i^2 \phi^2(|s - s'|)} + \sqrt{\frac{1}{n}\sum_{i = 1}^n A_i^2 \phi^2(|t - t'|)} \right] \\
+        &= \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t X_i(t)^2} \sqrt{\frac{1}{n}\sum_{i = 1}^n A_i^2 } \left[\phi(|s - s'|) + \phi(|t - t'|) \right] \\
+        &\leq \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t X_i(t)^2} \sqrt{\frac{1}{n}\sum_{i = 1}^n A_i^2 } 2 \phi(|s - s'| + |t - t'|) \\
+        &\leq \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t X_i(t)^2} \sqrt{\frac{1}{n}\sum_{i = 1}^n A_i^2 } 2 \phi(2 \sqrt{|s - s'|^2 + |t - t'|^2}) \\
+        &=: C_n \phi(2 \sqrt{|s - s'|^2 + |t - t'|^2})
+    \end{align}
+
+    Now let $h(x) = \phi(2 * x)$, and notice that $h(x) \to 0$ as $x \to 0$, since
+    $\phi$ is continuous and $\phi(0) = 0$. Thus, we have
+
+    \[
+        |\hat{c}(s, t) - \hat{c}(s', t')| \leq C_n h(\sqrt{|s - s'|^2 + |t - t'|^2}) \,.
+    \]
+
+    By Theorem 22.10 in \ref{davidson2021} we know that $\{\hat{c}(s, t) : s, t \in [0, 1]\}$
+    is strongly stochastically equicontinuous if $limsup_n C_n < \infty$. (Proof this.)
+    Following the discussion after Theorem 22.9 in \ref{davidson2021} we know that then
+    also $\{\hat{c} - c\}$ is strongly stochastically equicontinuous. And finally, by
+    Theorem 22.8 in \ref{davidson2021} we get
+    \[
+        ||\hat{c} - c||_\infty \overset{a.s.}{\to} 0 \,.
+    \]
+
+    \emph{Second claim.}
+    To be written.
+\end{proof}
+
+
+\begin{corollary}
+    Consider the conditions of Theorem  \ref{thm:fclt}. Define $\tilde{X}_i(t)
+    = X_i(t) / \sqrt{c(t, t)}$. Then
+    \[
+        \frac{1}{\sqrt{n}} \sum_{i = 1}^n \tilde{X}_i(t) \overset{d}{\to}
+        \mathcal{GP}(0, \tilde{c}) \quad \text{in} \, C^1[0, 1],
+    \]
+    where $\tilde{c}$ is a correlation function satisfying $\tilde{c}(t, t) = 1$.
+\end{corollary}
+\begin{proof}
+    Notice that the process $\tilde{X}_i$ is also mean-zero and satisfies the ICA. From
+    Theorem \ref{thm:fclt} we know that
+    \begin{align}
+        \tilde{c}(s, t) &= \mathbb{E}[\tilde{X}_i(s)\tilde{X}_i(t)] \\
+        &= \mathbb{E}\left[\frac{X_i(s)}{\sqrt{c(s, s)}} \frac{X_i(t)}{\sqrt{c(t, t)}}\right] \\
+        &= \frac{c(s, t)}{\sqrt{c(s, s) c(t, t)}},
+    \end{align}
+    and thus $\tilde{c}$ is a correlation function.
+\end{proof}
