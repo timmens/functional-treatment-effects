@@ -53,7 +53,7 @@
     neighborhood of $0$. Let $X$ be a $f$-H\"older continuous process. If $f$ satisfies
     the ICA, then there exists a non-decreasing continuous function $\phi$ on $[0, 1]$
     with $\phi(0) = 0$, which depends only on $f$, and a real-valued random variable $A$
-    such that
+    with bounded second moment such that for all $s, t \in [0, 1]$,
     \[
         |X(s) - X(t)| \leq A \phi(|s - t|) \,.
     \]
@@ -62,13 +62,30 @@
     The claim follows directly from Theorem 2.3 in \cite{hahn1977} with $r = 2$.
 \end{proof}
 
+\begin{corollary}\label{cor:lipschitz}
+    Consider the setup from Proposition \ref{prop:lipschitz}. Let $X_1, \dots, X_n$ be
+    a random sample with the same distribution as $X$. From the proposition we know
+    there exists random variables $A_1, \dots, A_n$ and non-decreasing functions
+    $\phi_1, \dots, \phi_n$ such that the claim holds. Define $\phi = \max_{i = 1}^n
+    \phi_i$. Then, $\phi$ is non-decreasing, continuous, $\phi(0) = 0$, and for all $i =
+    1, \dots, n$,
+    \[
+        |X_i(s) - X_i(t)| \leq A_i \phi(|s - t|) \,.
+    \]
+\end{corollary}
+\begin{proof}
+    The claim follows directly from Proposition \ref{prop:lipschitz}, the fact that
+    $X_i$ has the same distribution as $X$, and the fact that the maximum of continuous
+    non-decreasing functions is continuous and non-decreasing.
+\end{proof}
+
 
 \begin{theorem}\label{thm:fclt}
     Let $X_1, \dots, X_n$ be independent mean-zero processes following the same
     distribution as $X$. Suppose that $\mathbb{E}[X(t)^2] < \infty$ for all $t$, and
     that $X$ satisfies the ICA, and has $C^1[0, 1]$ sample paths almost surely. Then,
     \[
-        \frac{1}{\sqrt{n}} \sum_{i = 1}^n X_i(t) \overset{d}{\to} \mathcal{GP}(0, c)
+        \frac{1}{\sqrt{n}} \sum_{i = 1}^n X_i \overset{d}{\to} \mathcal{GP}(0, c)
         \quad \text{in} \, C^1[0, 1],
     \]
     with $c(s, t) = \mathbb{E}[X(s) X(t)]$.
@@ -80,46 +97,88 @@
 
 \begin{theorem}\label{thm:uniform-convergence-kernel}
     Let $X_1, \dots, X_n$ be independent mean-zero processes following the same
-    distribution as $X$. Suppose that $X$ satisfies the ICA and let $\hat{c}(s, t) =
-    \frac{1}{n} \sum_{i = 1}^n X_i(s) X_i(t)$. Then,
+    distribution as $X$. Suppose that $X$ satisfies the ICA and that $\sup_t X(t)^2 =
+    \mathcal{O}_p(1)$. Let $\hat{c}(s, t) = \frac{1}{n} \sum_{i = 1}^n X_i(s)
+    X_i(t)$ denote the sample covariance. Then,
     \begin{align}
         || \hat{c} - c ||_\infty &\overset{p}{\to} 0 \\
         || \partial_{1, 2}\hat{c} - \partial_{1, 2}c ||_\infty &\overset{p}{\to} 0
     \end{align}
-    where $|| \cdot ||_\infty$ is the supremum norm.
+    where $|| \cdot ||_\infty$ is the supremum norm. If we further assume that $\sup_t
+    X(t)$ has finite second moment, convergence is almost surely.
 \end{theorem}
 \begin{proof}
     \emph{First claim.}
     Let $s, t, s', t' \in [0, 1]$. Let $A_1, \dots, A_n$ and $\phi$ be the random
-    variables and function from Proposition \ref{prop:lipschitz}, respectively. We have
+    variables and function from Proposition \ref{prop:lipschitz} and Corollary
+    \ref{cor:lipschitz}, respectively. We have
     \begin{align}
         |\frac{1}{n} &\sum_{i = 1}^n X_i(s) X_i(t) - \frac{1}{n} \sum_{i = 1}^n X_i(s') X_i(t')| \\
         &\leq |\frac{1}{n} \sum_{i = 1}^n (X_i(s) - X_i(s')) X_i(t) + (X_i(t) - X_i(t')) X_i(s')| \\
         &\leq \frac{1}{n} \sum_{i = 1}^n |X_i(s) - X_i(s')| |X_i(t)| + \frac{1}{n} \sum_{i = 1}^n |X_i(t) - X_i(t')| |X_i(s')| \\
-        &\leq \sqrt{\frac{1}{n} \sum_{i = 1}^n |X_i(s) - X_i(s')|^2} \sqrt{\frac{1}{n} \sum_{i = 1}^n |X_i(t)|^2} + \sqrt{\frac{1}{n} \sum_{i = 1}^n |X_i(t) - X_i(t')|^2} \sqrt{\frac{1}{n} \sum_{i = 1}^n |X_i(s')|^2} \\
-        &\leq \sqrt{\frac{1}{n} \sum_{i = 1}^n |X_i(s) - X_i(s')|^2} \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t |X_i(t)|^2} + \sqrt{\frac{1}{n} \sum_{i = 1}^n |X_i(t) - X_i(t')|^2} \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t |X_i(t)|^2} \\
-        &= \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t X_i(t)^2} \left[\sqrt{\frac{1}{n}\sum_{i = 1}^n |X_i(s) - X_i(s')|^2} + \sqrt{\frac{1}{n}\sum_{i = 1}^n |X_i(s) - X_i(t')|^2} \right] \\
-        &\leq \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t X_i(t)^2} \left[\sqrt{\frac{1}{n}\sum_{i = 1}^n A_i^2 \phi^2(|s - s'|)} + \sqrt{\frac{1}{n}\sum_{i = 1}^n A_i^2 \phi^2(|t - t'|)} \right] \\
-        &= \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t X_i(t)^2} \sqrt{\frac{1}{n}\sum_{i = 1}^n A_i^2 } \left[\phi(|s - s'|) + \phi(|t - t'|) \right] \\
-        &\leq \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t X_i(t)^2} \sqrt{\frac{1}{n}\sum_{i = 1}^n A_i^2 } 2 \phi(|s - s'| + |t - t'|) \\
-        &\leq \sqrt{\frac{1}{n} \sum_{i = 1}^n \sup_t X_i(t)^2} \sqrt{\frac{1}{n}\sum_{i = 1}^n A_i^2 } 2 \phi(2 \sqrt{|s - s'|^2 + |t - t'|^2}) \\
-        &=: C_n \phi(2 \sqrt{|s - s'|^2 + |t - t'|^2})
+        &=: I_1 + I_2 \,.
+    \end{align}
+    Now consider $I_1$. Using the Cauchy-Schwarz inequality, we have
+    \begin{align}
+        I_1 &\leq \left(\frac{1}{n} \sum_{i = 1}^n |X_i(s) - X_i(s')|^2\right)^{1/2}
+        \left(\frac{1}{n} \sum_{i = 1}^n |X_i(t)|^2\right)^{1/2} \\
+        &\leq \left(\frac{1}{n} \sum_{i = 1}^n |X_i(s) - X_i(s')|^2\right)^{1/2}
+        \left(\frac{1}{n} \sum_{i = 1}^n \sup_t |X_i(t)|^2\right)^{1/2} \\
+        &= \left(\frac{1}{n} \sum_{i = 1}^n \sup_t X_i(t)^2\right)^{1/2}
+        \left(\frac{1}{n}\sum_{i = 1}^n |X_i(s) - X_i(s')|^2\right)^{1/2} \\
+        &\leq \left(\frac{1}{n} \sum_{i = 1}^n \sup_t X_i(t)^2\right)^{1/2}
+        \left(\frac{1}{n}\sum_{i = 1}^n A_i^2 \phi^2(|s - s'|)\right)^{1/2} \\
+        &= \left(\frac{1}{n} \sum_{i = 1}^n \sup_t X_i(t)^2\right)^{1/2}
+        \left(\frac{1}{n}\sum_{i = 1}^n A_i^2 \right)^{1/2} \phi(|s - s'|) \\
+        &=: C_n \phi(|s - s'|) \,.
+    \end{align}
+    Doing the same calculations for $I_2$, and utilizing the $\ell_1-\ell_2$-norm
+    inequality and that $\phi$ is non-decreasing, we get
+    \begin{align}
+        I_1 + I_2 &\leq C_n \left(\phi(|s - s'|) + \phi(|t - t'|)\right) \\
+        &\leq C_n 2 \phi(|s - s'| + |t - t'|) \\
+        &\leq C_n 2 \phi\left(2(|s - s'|^2 + |t - t'|^2)^{1/2}\right)
     \end{align}
 
-    Now let $h(x) = \phi(2 * x)$, and notice that $h(x) \to 0$ as $x \to 0$, since
+    Now let $h(x) = 2 \phi(2 x)$, and notice that $h(x) \to 0$ as $x \to 0$, since
     $\phi$ is continuous and $\phi(0) = 0$. Thus, we have
-
     \[
-        |\hat{c}(s, t) - \hat{c}(s', t')| \leq C_n h(\sqrt{|s - s'|^2 + |t - t'|^2}) \,.
+        |\hat{c}(s, t) - \hat{c}(s', t')| \leq C_n h\left((|s - s'|^2 + |t -
+        t'|^2)^{1/2}\right) \,.
     \]
-
-    By Theorem 22.10 in \ref{davidson2021} we know that $\{\hat{c}(s, t) : s, t \in [0, 1]\}$
-    is strongly stochastically equicontinuous if $limsup_n C_n < \infty$. (Proof this.)
-    Following the discussion after Theorem 22.9 in \ref{davidson2021} we know that then
-    also $\{\hat{c} - c\}$ is strongly stochastically equicontinuous. And finally, by
-    Theorem 22.8 in \ref{davidson2021} we get
+    Let us start by showing the case of almost sure convergence. By Theorem 22.10 in
+    \cite{davidson2021} we know that $\{\hat{c}_n \}$ is strongly stochastically
+    equicontinuous if $\limsup_n C_n < \infty$ almost surely. We show this by showing
+    that $C_n$ converges almost surely to a finite value. Recall that $A_1, \dots, A_n$
+    are IID and have finite second moments. Thus by the strong law of large numbers and
+    an application of the continuous mapping theorem we know that
+    \[
+        \left(\frac{1}{n} \sum_{i=1}^n A_i^2\right)^{1/2} \overset{a.s.}{\to}
+        \mathbb{E}[A_1^2]^{1/2} < \infty \,.
+    \]
+    Similarly, as the $X_1, \dots, X_n$ are IID and we assumed that $\mathbb{E}[\sup_t
+    X_1(t)^2] < \infty$ we know that
+    \[
+        \left(\frac{1}{n} \sum_{i=1}^n \sup_t X_i(t)^2\right)^{1/2} \overset{a.s.}{\to}
+        \mathbb{E}[\sup_t X_1(t)^2]^{1/2} < \infty \,.
+    \]
+    And thus $C_n$ converges to a finite value almost surely, which gives the desired
+    result. Following the discussion after Theorem 22.9 in \cite{davidson2021} we know
+    that then also $\{\hat{c}_n - c\}$ is strongly stochastically equicontinuous. And
+    finally, by Theorem 22.8 in \cite{davidson2021} we get
     \[
         ||\hat{c} - c||_\infty \overset{a.s.}{\to} 0 \,.
+    \]
+    Now let us consider the case of convergence in probability. In this case we know
+    that $\sup_t X_i(t)^2 = \mathcal{O}_p(1)$ for all $i$, and thus
+    \[
+        \left(\frac{1}{n} \sum_i \sup_t X_i(t)^2\right)^{1/2} = \mathcal{O}_p(1) \,.
+    \]
+    Hence, $C_n = \mathcal{O}_p(1)$, and $\{\hat{c}_n\}$ is stochastically
+    equicontinuous by Theorem 22.10 in \cite{davidson2021}. Thus, by Theorem 22.9 in
+    \cite{davidson2021}
+    \[
+        ||\hat{c} - c||_\infty \overset{p}{\to} 0 \,.
     \]
 
     \emph{Second claim.}
