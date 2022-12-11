@@ -1,0 +1,21 @@
+\section{Kernel Assumptions}
+
+In section \ref{sec:textbook-theory} we provided the basic framework to achieve a
+functional central limit theorem and consistent estimation of the covariance kernel for
+the sample mean of continuous functional random variables. A core assumptions of this
+framework is that the process satisfies the integrability condition A (ICA), which in
+turn can be related to an integral assumption on the covariance kernel. In this section
+we try to visualize this assumption by considering the case of a processes with
+stationary kernels. By Proposition \ref{prop:IcaSymmetricKernel}
+we know that a symmetric kernel satisfies the ICA if
+\[
+    \int_0^\infty y^{-3/2} \sqrt{f(y)} \, dy < \infty.
+\]
+for $f(y) = c(0) - c(y)$, where $c(|s-t|) = \mathbb{E}[X(s)X(t)]$. The first thing to
+note is that for $y > 1$ the integral is finite since $f(y)$ is bounded (is this true?).
+Hence we only need to consider the case $y \leq 1$. Here the problematic region is
+when $y$ is in some $\varepsilon$-neighborhood of $0$, as the integral between $\varepsilon$ and 1 is
+always finite. We thus consider the condition
+\[
+    \int_0^\varepsilon y^{-3/2} \sqrt{f(y)} \, dy < \infty.
+\]

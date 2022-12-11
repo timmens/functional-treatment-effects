@@ -10,6 +10,7 @@ pdfs
 *.pdf
 
 # latex
+*.dvi
 *.aux
 *.bbl
 *.bcf

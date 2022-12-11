@@ -34,17 +34,16 @@ regulatory assumptions we get
 \[
     \sqrt{n}(\hat{\beta}(t) - \beta(t)) \to_d \mathcal{N}(0, C(t)) \,,
 \]
-for some covariance $C(t)$. To utilize the results from Theorem \ref{thm:main_theorem}
+for some covariance $C(t)$. To utilize the results from Theorem \ref{thm:MainTheorem}
 we not only require point-wise convergence, but convergence of the whole process.
 
-\begin{assumption}
-    \label{ass:ols_process_convergence}
+\begin{assumption}\label{ass:OlsProcessConvergence}
     [...] list assumption that ols process convergences to Gaussian process [...]
 \end{assumption}
 
 \begin{theorem}
     Let $\hat{\beta} = \{\hat{\beta}(t) : t \in [0, 1]\}$ be the OLS estimator process.
-    Under Assumption \ref{ass:ols_process_convergence} we get
+    Under Assumption \ref{ass:OlsProcessConvergence} we get
     \[
         \sqrt{n}(\hat{\beta} - \beta) \to_d \mathcal{GP}(0, C_\beta) \,,
     \]
@@ -58,9 +57,9 @@ we not only require point-wise convergence, but convergence of the whole process
 
 To compute the simultaneous confidence bands in practice we need to estimate $C_\beta$.
 In particular, we will construct an estimator $\hat{C}_\beta$ of $C_\beta$ that fulfills
-Assumption \ref{ass:estimator_assumptions}. We can then use the method of
-\cite{liebl2021} to get a valid simultaneous confidence band by Theorem
-\ref{thm:main_theorem}. Let us start by analyzing the components of the asymptotic
+Assumption \ref{ass:EstimatorAssumptions}. We can then use the method of
+ to get a valid simultaneous confidence band by Theorem
+\ref{thm:MainTheorem}. Let us start by analyzing the components of the asymptotic
 covariance function $C_\beta$.
 
 Define $Z(t) = \sqrt{n}(\hat{\beta}(t) - \beta(t))$ and note that by plugging in for $y$
@@ -119,8 +118,7 @@ for $s, t \in [0, 1]$. Written more compactly as
 \]
 Note that HC stands for "heteroskedasticity-consistent" and 0 refers to this being a
 baseline estimator. In the Appendix we list formulas for the cases HC1, HC2 and HC3,
-which are in line with the definitions of the classical data case, see e.g.
-\cite{hansen_econometrics_book}.
+which are in line with the definitions of the classical data case, see e.g. \cite{HansenEconometricsBook}.
 
 \begin{proposition}{}
     [...] show that the estimator satisfies all the assumptions we need [...]
@@ -418,7 +416,7 @@ doubleselection algorithm for choosing which variables to control for.
 
 \subsubsection{Uniform convergence}
 
-In order to utilize Theorem \ref{thm:main_theorem} we require a result of the form
+In order to utilize Theorem \ref{thm:MainTheorem} we require a result of the form
 \begin{align}
     \sqrt{n} (\hat{\tau}_{AIPW} - \tau) \to_d \mathcal{GP}(0, C_\tau).
 \end{align}

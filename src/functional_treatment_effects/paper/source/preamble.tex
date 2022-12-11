@@ -8,7 +8,7 @@
 
 %% bibliography
 \usepackage[
-backend=biber,
+backend=bibtex,
 style=alphabetic,
 sorting=ynt
 ]{biblatex}
@@ -63,7 +63,6 @@ sorting=ynt
   {\colorbox{#1}{$\scriptstyle#2$}}%
   {\colorbox{#1}{$\scriptscriptstyle#2$}}}%
 
-
 % auxiliary options
 
 %% colors
@@ -76,13 +75,10 @@ sorting=ynt
 \hypersetup{colorlinks=true, citecolor=blue, urlcolor=blue}
 
 %% local definitions
-% \startlocaldefs
-% \endlocaldefs
 
-%% arxiv
-%% % provide arXiv number if available:
-%% %\arxiv{arXiv:0000.0000}
-
+% better looking comparison operators
+\let\leq=\leqslant
+\let\geq=\geqslant
 
 %% title page
 \title{

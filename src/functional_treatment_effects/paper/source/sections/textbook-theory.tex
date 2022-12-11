@@ -1,0 +1,209 @@
+\section{Textbook Theory}
+\label{sec:textbook-theory}
+
+
+\begin{definition}
+    A mean-zero process $X = \{X(t) : t \in [0, 1]\}$ is said to be $f$-H\"older continuous if
+    \[
+        \mathbb{E}\left[(X(s) - X(t))^2 \right] \leq f(|s - t|)
+    \]
+    for small $|s-t|$.
+\end{definition}
+
+
+\begin{definition}
+    We say a function $f: [0, 1] \to \mathbb{R}$ satisfies the integral condition A (ICA) if
+    \[
+        \int_0^\infty y^{-3/2} \sqrt{f(y)} \, dy < \infty.
+    \]
+\end{definition}
+
+\begin{definition}
+    If there exists a function $f$ that is non-negative and non-decreasing in a neighborhood around
+    0, such that $X$ is $f$-H\"older continuous and $f$ satisfies the ICA, then we say $X$ satisfies
+    the ICA.
+\end{definition}
+
+
+\begin{proposition}\label{prop:IcaSymmetricKernel}
+    Let $X$ be a mean-zero process with stationary kernel, i.e. there is a function $\tilde{c} : [0,
+    1] \to \mathbb{R}$ such that $\mathbb{E}[X(s) X(t)] = \tilde{c}(|s - t|)$ for all $s, t$. Then
+    $X$ satisfies the ICA if and only if $2 (\tilde{c}(0) - \tilde{c})$ satisfies the ICA.
+\end{proposition}
+\begin{proof}
+    Notice that
+    \begin{align}
+        \mathbb{E}\left[(X(s) - X(t))^2\right]
+        &= \mathbb{E}\left[X(s)^2 + X(t)^2 - 2 X(s) X(t)\right] \\
+        &= \mathbb{E}[X(s)^2] + \mathbb{E}[X(t)^2] - 2 \mathbb{E}[X(s) X(t)] \\
+        &= 2 (\tilde{c}(0) - \tilde{c}(|s - t|)).
+    \end{align}
+    Suppose now that $X$ satisfies the ICA. Then, by the definition of the ICA, there is a function
+    $f$ such that $X$ is $f$-H\"older and that $f$ satisfies the ICA. We also know that $2
+    (\tilde{c}(0) - \tilde{c}) \leq f$. Therefore, also $2 (\tilde{c}(0) - \tilde{c})$ satisfies the
+    ICA. Conversely, suppose that $2 (\tilde{c}(0) - \tilde{c})$ satisfies the ICA. Then, $X$
+    satisfies the ICA using $2 (\tilde{c}(0) - \tilde{c})$ as $f$.
+\end{proof}
+
+\begin{proposition}\label{prop:Lipschitz}
+    Let $f$ be a nonnegative function on $[0, 1]$ that is non-decreasing in a neighborhood of $0$.
+    Let $X$ be a $f$-H\"older continuous process. If $f$ satisfies the ICA, then there exists a
+    non-decreasing continuous function $\phi$ on $[0, 1]$ with $\phi(0) = 0$, which depends only on
+    $f$, and a real-valued random variable $A$ with bounded second moment such that for all $s, t
+    \in [0, 1]$,
+    \[
+        |X(s) - X(t)| \leq A \phi(|s - t|) \,.
+    \]
+\end{proposition}
+\begin{proof}
+    The claim follows directly from Theorem 2.3 in \cite{hahn1977} with $r = 2$.
+\end{proof}
+
+\begin{corollary}\label{cor:Lipschitz}
+    Consider the setup from Proposition \ref{prop:Lipschitz}. Let $X_1, \dots, X_n$ be a random
+    sample with the same distribution as $X$. From the proposition we know there exists random
+    variables $A_1, \dots, A_n$ and non-decreasing functions $\phi_1, \dots, \phi_n$ such that the
+    claim holds. Define $\phi = \max_{i = 1}^n \phi_i$. Then, $\phi$ is non-decreasing, continuous,
+    $\phi(0) = 0$, and for all $i = 1, \dots, n$,
+    \[
+        |X_i(s) - X_i(t)| \leq A_i \phi(|s - t|) \,.
+    \]
+\end{corollary}
+\begin{proof}
+    The claim follows directly from Proposition \ref{prop:Lipschitz}, the fact that $X_i$ has the
+    same distribution as $X$, and the fact that the maximum of continuous non-decreasing functions
+    is continuous and non-decreasing.
+\end{proof}
+
+
+\begin{theorem}\label{thm:fclt}
+    Let $X_1, \dots, X_n$ be independent mean-zero processes following the same distribution as $X$.
+    Suppose that $\mathbb{E}[X(t)^2] < \infty$ for all $t$, and that $X$ satisfies the ICA, and has
+    $C^1[0, 1]$ sample paths almost surely. Then,
+    \[
+        \frac{1}{\sqrt{n}} \sum_{i = 1}^n X_i \overset{d}{\to} \mathcal{GP}(0, c)
+        \quad \text{in} \, C^1[0, 1],
+    \]
+    with $c(s, t) = \mathbb{E}[X(s) X(t)]$.
+\end{theorem}
+\begin{proof}
+    This follows directly by Theorem 2.5 in \cite{hahn1977}.
+\end{proof}
+
+
+\begin{theorem}\label{thm:UniformConvergenceKernel}
+    Let $X_1, \dots, X_n$ be independent mean-zero processes following the same distribution as $X$.
+    Suppose that $X$ satisfies the ICA and that $\mathbb{E}[\sup_{t \in [0, 1]} X(t)^2] < \infty$. Let
+    $\hat{c}_n(s, t) = 1/n \sum_{i = 1}^n X_i(s) X_i(t)$ denote the sample covariance. Then,
+    \begin{align}
+        || \hat{c}_n - c ||_\infty &\overset{a.s.}{\to} 0 \,,
+    \end{align}
+    where $|| \cdot ||_\infty$ is the supremum norm.
+\end{theorem}
+\begin{proof}
+    In this proof we will utilize three theorems by \cite{davidson2021}. We will first use Theorem
+    22.10 to show that the process $\{\hat{c}_n\}$ is strongly stochastically equicontinuous
+    Then, we follow the discussion after Theorem 22.9 which gives that
+    $\{\hat{c}_n - c\}$ is strongly stochastically equicontinuous if $\{\hat{c}_n\}$ is strongly
+    stochastically equicontinuous. Finally, given that $\{\hat{c}_n - c\}$ is strongly
+    stochastically equicontinuous we can employ Theorem 22.8 to conclude the proof.\\
+
+    \noindent To show strong stochastic equicontinuity of $\{\hat{c}_n\}$ we need to verify that
+    \[
+        |\hat{c}_n(s, t) - \hat{c}_n(s', t')| \leq B_n h\left(((s - s')^2 + (t -
+        t')^2)^{1/2}\right) \, \text{a.s.}
+    \]
+    for all $s, t, s', t' \in [0, 1]$, with nonstochastic $h$ and $h(x) \downarrow 0$ as $x
+    \downarrow 0$ and $\{B_n\}$ positive stochastic sequence independent of $s, t, s', t'$ such that
+    $\limsup_n B_n < \infty$.
+
+    Pick $s, t, s', t' \in [0, 1]$ arbitrary and let $A_1, \dots, A_n$ and $\phi$ be the random
+    variables and function from Proposition \ref{prop:Lipschitz} and Corollary \ref{cor:Lipschitz},
+    respectively. We have
+    \begin{align}
+        |\frac{1}{n} &\sum_{i = 1}^n X_i(s) X_i(t) - \frac{1}{n} \sum_{i = 1}^n X_i(s') X_i(t')| \\
+        &\leq |\frac{1}{n} \sum_{i = 1}^n (X_i(s) - X_i(s')) X_i(t) + (X_i(t) - X_i(t')) X_i(s')| \\
+        &\leq \underbrace{\frac{1}{n} \sum_{i = 1}^n |X_i(s) - X_i(s')| |X_i(t)|}_{=:I_1} +
+        \underbrace{\frac{1}{n} \sum_{i = 1}^n |X_i(t) - X_i(t')| |X_i(s')|}_{=:I_2} \,.
+    \end{align}
+    Now consider $I_1$. Using the Cauchy-Schwarz inequality, we have
+    \begin{align}
+        I_1 &\leq \left(\frac{1}{n} \sum_{i = 1}^n |X_i(s) - X_i(s')|^2\right)^{1/2}
+        \left(\frac{1}{n} \sum_{i = 1}^n |X_i(t)|^2\right)^{1/2} \\
+        &\leq \left(\frac{1}{n} \sum_{i = 1}^n |X_i(s) - X_i(s')|^2\right)^{1/2} \left(\frac{1}{n}
+        \sum_{i = 1}^n \sup_{t \in [0, 1]} |X_i(t)|^2\right)^{1/2} \\
+        &= \left(\frac{1}{n} \sum_{i = 1}^n \sup_{t \in [0, 1]} X_i(t)^2\right)^{1/2}
+        \left(\frac{1}{n}\sum_{i = 1}^n |X_i(s) - X_i(s')|^2\right)^{1/2} \\
+        &\leq \left(\frac{1}{n} \sum_{i = 1}^n \sup_{t \in [0, 1]} X_i(t)^2\right)^{1/2}
+        \left(\frac{1}{n}\sum_{i = 1}^n A_i^2 \phi^2(|s - s'|)\right)^{1/2} \\
+        &= \underbrace{\left(\frac{1}{n} \sum_{i = 1}^n \sup_{t \in [0, 1]} X_i(t)^2\right)^{1/2}
+        \left(\frac{1}{n}\sum_{i = 1}^n A_i^2 \right)^{1/2}}_{=:B_n} \phi(|s - s'|) \,.
+    \end{align}
+    Doing the same calculations for $I_2$, and utilizing the $\ell_1-\ell_2$-norm inequality and
+    that $\phi$ is non-decreasing, we get
+    \begin{align}
+        I_1 + I_2 &\leq C_n \left(\phi(|s - s'|) + \phi(|t - t'|)\right) \\
+        &\leq B_n 2 \phi(|s - s'| + |t - t'|) \\
+        &\leq B_n 2 \phi\left(2(|s - s'|^2 + |t - t'|^2)^{1/2}\right)
+    \end{align}
+    Now let $h(x) = 2 \phi(2 x)$, and notice that $h(x) \downarrow 0$ as $x \downarrow 0$, since
+    $\phi$ is continuous, non-decreasing and $\phi(0) = 0$. Thus, we have
+    \[
+        |\hat{c}(s, t) - \hat{c}(s', t')| \leq B_n h\left((|s - s'|^2 + |t - t'|^2)^{1/2}\right) \,.
+    \]
+    By Theorem 22.10 in
+    \cite{davidson2021} we know that $\{\hat{c}_n \}$ is strongly stochastically equicontinuous if
+    $\limsup_n B_n < \infty$ almost surely, which we show by proofing that $B_n$ converges almost
+    surely to a finite value. Recall that $A_1, \dots, A_n$ are IID and have finite second moments.
+    Thus by the strong law of large numbers and an application of the continuous mapping theorem we
+    know that
+    \[
+        \left(\frac{1}{n} \sum_{i=1}^n A_i^2\right)^{1/2} \overset{a.s.}{\to}
+        \mathbb{E}[A_1^2]^{1/2} < \infty \,.
+    \]
+    Similarly, as the $X_1, \dots, X_n$ are IID and we assumed that $\mathbb{E}[\sup_{t \in [0, 1]}
+    X_1(t)^2] < \infty$ we know that
+    \[
+        \left(\frac{1}{n} \sum_{i=1}^n \sup_{t \in [0, 1]} X_i(t)^2\right)^{1/2} \overset{a.s.}{\to}
+        \mathbb{E}[\sup_{t \in [0, 1]} X_1(t)^2]^{1/2} < \infty \,.
+    \]
+    But then $B_n$ converges to a finite value almost surely, which gives the desired result. And
+    finally, by Theorem 22.8 in \cite{davidson2021} we get
+    \[
+        ||\hat{c} - c||_\infty \overset{a.s.}{\to} 0 \,.
+    \]
+\end{proof}
+
+\begin{theorem}\label{thm:UniformConvergenceKernelDerivative}
+    Consider the same setup as in Theorem \ref{thm:UniformConvergenceKernel}. However, now suppose
+    that $X'$ satisfies the ICA and that $\mathbb{E}[\sup_{t \in [0, 1]} X'(t)^2] < \infty$. Then,
+    \begin{align}
+        || \partial_{1, 2}\hat{c}_n - \partial_{1, 2}c ||_\infty &\overset{a.s.}{\to} 0 \,.
+    \end{align}
+\end{theorem}
+\begin{proof}
+    Note that $\partial_{1, 2} \hat{c}_n(s, t) = \frac{1}{n} \sum_{i = 1}^n X_i'(s) X_i'(t)$, and
+    $\partial_{1, 2} c(s, t) = \mathbb{E}[X'(s) X'(t)]$. And thus the proof follows using the same
+    arguments as in the proof of Theorem \ref{thm:UniformConvergenceKernel}.
+\end{proof}
+
+
+\begin{corollary}
+    Consider the conditions of Theorem  \ref{thm:fclt}. Define $\tilde{X}_i(t) = X_i(t) / \sqrt{c(t,
+    t)}$. Then
+    \[
+        \frac{1}{\sqrt{n}} \sum_{i = 1}^n \tilde{X}_i(t) \overset{d}{\to} \mathcal{GP}(0, \tilde{c})
+        \quad \text{in} \, C^1[0, 1],
+    \]
+    where $\tilde{c}$ is a correlation function satisfying $\tilde{c}(t, t) = 1$.
+\end{corollary}
+\begin{proof}
+    Notice that the process $\tilde{X}_i$ is also mean-zero and satisfies the ICA. From Theorem
+    \ref{thm:fclt} we know that
+    \begin{align}
+        \tilde{c}(s, t) &= \mathbb{E}[\tilde{X}_i(s)\tilde{X}_i(t)] \\
+        &= \mathbb{E}\left[\frac{X_i(s)}{\sqrt{c(s, s)}} \frac{X_i(t)}{\sqrt{c(t, t)}}\right] \\
+        &= \frac{c(s, t)}{\sqrt{c(s, s) c(t, t)}},
+    \end{align}
+    and thus $\tilde{c}$ is a correlation function.
+\end{proof}
