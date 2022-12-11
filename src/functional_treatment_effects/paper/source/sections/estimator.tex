@@ -1,0 +1,154 @@
+\section{Inverse Propensity Score Estimator}
+
+
+\begin{definition}\label{def:IpwOracleEstimator}
+    We define the oracle inverse propensity score weighting estimator as
+    \[
+        \hat{\tau}_{\text{IPW}}^\ast(t) = \frac{1}{n} \sum_{i=1}^n
+        \underbrace{
+            \frac{W_i Y_i(t)}{e(X_i)} - \frac{(1 - W_i) Y_i(t)}{1 - e(X_i)}
+        }_{=:U_i^\ast(t)} \,.
+    \]
+\end{definition}
+
+\begin{definition}\label{def:IpwEstimator}
+    Let $\hat{e}$ be an estimator of $e$. We define the inverse propensity score weighting estimator
+    as
+    \[
+        \hat{\tau}_{\text{IPW}}(t) = \frac{1}{n} \sum_{i=1}^n
+        \underbrace{
+            \frac{W_i Y_i(t)}{\hat{e}(X_i)} - \frac{(1 - W_i) Y_i(t)}{1 - \hat{e}(X_i)}
+        }_{=:U_i(t)} \,.
+    \]
+\end{definition}
+
+\begin{theorem}\label{thm:IpwOracleCLT}
+    Consider a random sample from the \emph{Causal Data Generating Process}. Let
+    $\tau_{\text{IPW}}^\ast(t)$ be the oracle inverse propensity score weighting estimator defined
+    in Definition \ref{def:IpwOracleEstimator}. Assume that $\mathbb{E}[Y_i(t)^2] < \infty$ for all
+    $t$, and that there exists some $\eta > 0$ such that $\eta < e(X_i) < 1 - \eta$ for all $X_i$.
+    Assume further that $Y_i$ has $C^1$ sample paths, and that $Y_i$ satisfies the ICA. Then,
+    \[
+        \sqrt{n} \left( \hat{\tau}_{\text{IPW}}^\ast - \tau \right)
+        \overset{d}{\to} \mathcal{GP}\left(0, c_{\text{IPW}}\right) \,,
+    \]
+    where $c_{\text{IPW}}(s, t) = \mathbb{E}[(U_1^\ast(s) - \tau(s))(U_1^\ast(t) - \tau(t))]$.
+\end{theorem}
+\begin{proof}
+    We will show that the conditions of Theorem \ref{thm:fclt} are satisfied, which immediately
+    gives the desired result. Define $\bar{U}_i^\ast(t) = U_i^\ast(t) - \tau(t)$ and note that
+    $\hat{\tau}_{\text{IPW}}^\ast(t) - \tau(t) = \frac{1}{n} \sum_{i=1}^n \bar{U}_i^\ast(t)$. Thus,
+    we need to show that $\{\bar{U}_i^\ast(t)\}$ is a mean-zero IID sample (a), that
+    $\mathbb{E}[\bar{U}_1^\ast(t)^2] < \infty$ for all $t$ (b), that $\bar{U}_1^\ast(t)$ has $C^1$
+    sample paths (c), and finally that $\bar{U}_1^\ast(t)$ satisfies the ICA (d).
+
+    \paragraph{a.}
+    By [INSERT LEMMA HERE] we know that $\mathbb{E}[\bar{U}_i^\ast(t)] = 0$ for all $t$. Since
+    $(Y_i, W_i, X_i)$ are IID, any function of these variables is IID, and hence, so is
+    $\bar{U}_i^\ast(t)$.
+
+    \paragraph{b.}
+    We can construct an upper bound for $U_i^\ast(t)$ as follows
+    \begin{align}
+        U_i^\ast(t)
+        &= Y_i(t) \left[ \frac{W_i}{e(X_i)} - \frac{1 - W_i}{1 - e(X_i)} \right] \\
+        &\leq Y_i(t) \frac{W_i}{e(X_i)} \\
+        &\leq Y_i(t) / e(X_i) \\
+        &\leq Y_i(t) / \eta \,.
+    \end{align}
+    Given this we can bound the expectation as follows
+    \begin{align}
+        \mathbb{E}[\bar{U}_i^\ast(t)^2]
+        &= \mathbb{E}[(U_i^\ast(t) - \tau(t))^2] \\
+        &= \mathbb{E}[U_i^\ast(t)^2] - \mathbb{E}[\tau(t)^2] \\
+        &\leq \mathbb{E}[U_i^\ast(t)^2] \\
+        &\leq \mathbb{E}[Y_i(t)^2] / \eta^2 \\
+        &< \infty \,.
+    \end{align}
+
+    \paragraph{c.}
+    Note that $U_i^\ast(t)$ is a scaled version of $Y_i(t)$, and hence $U_i^\ast(t)$ has $C^1$
+    sample paths since $Y_i(t)$ has $C^1$ sample paths.
+
+    \paragraph{d.}
+    First define $M_i = W_i / e(X_i) - (1 - W_i)/(1 - e(X_i))$, such that $U_i^\ast(t) =
+    Y_i(t) M_i$. Then note that
+    \begin{align}
+        M_i^2
+        &= (\frac{W_i}{e(X_i)} - \frac{1 - W_i}{1 - e(X_i)})^2 \\
+        &= \frac{(W_i - e(X_i))^2}{e(X_i)^2 (1 - e(X_i))^2} \\
+        &\leq \frac{(1-\eta)^2}{\eta^2 (1 - \eta)^2} \\
+        &= \frac{1}{\eta^2} \,.
+    \end{align}
+    Now recall that we assume that $Y_i$ satisfies the ICA. Hence we find a function $f$
+    that satisfies the ICA and fulfills that for small $|s - t|$
+    \[
+        \mathbb{E}[(Y_i(s) - Y_i(t))^2] \leq f(|s - t|) \,.
+    \]
+    Further note that
+    \begin{align}
+        \mathbb{E}[\bar{U}_i^\ast(s) \bar{U}_i^\ast(t)]
+        &= \mathrm{cov}[U_i^\ast(s), U_i^\ast(t)] \\
+        &= \mathrm{cov}[M_i Y_i(s), M_i Y_i(t)] \\
+        &= \mathbb{E}[M_i \underbrace{\mathrm{cov}[Y_i(s), Y_i(t) | X_i, W_i]}_{=:c_Y(s, t | X_i, W_i)}]
+    \end{align}
+    And thus,
+    \begin{align}
+        \mathbb{E}&[(\bar{U}_1^\ast(s) - \bar{U}_1^\ast(t))^2] \\
+        &= \mathbb{E}[\bar{U}_1^\ast(s)^2 + \bar{U}_1^\ast(t)^2 - 2 \bar{U}_1^\ast(s) \bar{U}_1^\ast(t)] \\
+        &= \mathbb{E}\left[M_i^2 \left\{c_Y(s, s | X_i, W_i) + c_Y(t, t| X_i, W_i) - 2 c_Y(s, t | X_i, W_i)\right\}\right] \\
+        &\leq \mathbb{E}\left[\eta^{-2} \left\{c_Y(s, s | X_i, W_i) + c_Y(t, t| X_i, W_i) - 2 c_Y(s, t | X_i, W_i)\right\}\right] \\
+        &= \eta^{-2} \mathbb{E}\left[\left\{c_Y(s, s | X_i, W_i) + c_Y(t, t| X_i, W_i) - 2 c_Y(s, t | X_i, W_i)\right\}\right]\\
+        &= \eta^{-2} \left\{ \mathrm{cov}[Y_i(s), Y_i(s)] + \mathrm{cov}[Y_i(t), Y_i(t)] - 2 \mathrm{cov}[Y_i(s), Y_i(t)] \right\} \\
+        &= \eta^{-2} \mathbb{E}\left[(Y_i(s) - Y_i(t))^2\right] \\
+        &\leq \eta^{-2} f(|s - t|) \,.
+    \end{align}
+    Hence, define $h(x) = \eta^{-2} f(x)$, and we have
+    \begin{align}
+        \mathbb{E}[(\bar{U}_1^\ast(s) - \bar{U}_1^\ast(t))^2] \leq h(|s - t|) \,,
+    \end{align}
+    for small $|s-t|$, which concludes the proof, since $h$ inherits all the relevant properties of
+    $f$.
+
+\end{proof}
+
+
+\begin{theorem}
+    Consider a random sample from the \emph{Causal Data Generating Process}. Let
+    $\hat{\tau}_{\text{IPW}}(t)$ be the inverse propensity score weighting estimator defined in
+    Definition \ref{def:IpwEstimator}. Assume that $\hat{e} - e \to 0$ [EDIT HERE]. Assume that
+    $\mathbb{E}[Y_i(t)^2] < \infty$ for all $t$, and that there exists some $\eta > 0$ such that
+    $\eta < e(X_i) < 1 - \eta$ for all $X_i$. Assume further that $Y_i$ has $C^1$ sample paths, and
+    that $Y_i$ satisfies the ICA. Then,
+    \[
+        \sqrt{n} \left( \hat{\tau}_{\text{IPW}} - \tau \right)
+        \overset{d}{\to} \mathcal{GP}\left(0, c_{\text{IPW}}\right) \,,
+    \]
+    where $c_{\text{IPW}}(s, t) = \mathbb{E}[(U_1^\ast(s) - \tau(s))(U_1^\ast(t) - \tau(t))]$.
+
+\end{theorem}
+\begin{proof}
+    Note that using Lemma \ref{lem:IpwEstimatorConvergenceToOracle} we have
+    \begin{align}
+        \sqrt{n} \left( \hat{\tau}_{\text{IPW}} - \tau \right) \\
+        &= \sqrt{n} \left( \hat{\tau}_{\text{IPW}}^\ast - \tau \right) + \sqrt{n} \left(
+        \hat{\tau}_{\text{IPW}} - \hat{\tau}_{\text{IPW}}^\ast \right) \\
+        &= \sqrt{n} \left( \hat{\tau}_{\text{IPW}}^\ast - \tau \right) + o_p(1)_\infty \,,
+    \end{align}
+    and hence the result follows by the functional generalized Slutsky theorem [ADD REFERENCE HERE].
+\end{proof}
+
+
+\begin{lemma}\label{lem:IpwEstimatorConvergenceToOracle}
+    Consider a random sample from the \emph{Causal Data Generating Process}. Let
+    $\hat{\tau}_{\text{IPW}}(t)$ be the inverse propensity score weighting estimator defined in
+    Definition \ref{def:IpwEstimator}. Assume that $\hat{e} - e \to 0$ [EDIT HERE]. Assume that
+    $\mathbb{E}[Y_i(t)^2] < \infty$ for all $t$, and that there exists some $\eta > 0$ such that
+    $\eta < e(X_i) < 1 - \eta$ for all $X_i$. Assume further that $Y_i$ has $C^1$ sample paths, and
+    that $Y_i$ satisfies the ICA. Then,
+    \[
+        \sqrt{n} ||\hat{\tau}_{\text{IPW}} - \hat{\tau}_{\text{IPW}}^\ast||_\infty \overset{p}{\to} 0
+        \,,
+    \]
+    where $||\cdot||_\infty$ is the supremum-norm.
+\end{lemma}

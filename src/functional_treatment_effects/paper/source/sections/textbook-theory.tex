@@ -25,7 +25,7 @@
 \end{definition}
 
 
-\begin{proposition}\label{prop:ica-symmetric-kernel}
+\begin{proposition}\label{prop:IcaSymmetricKernel}
     Let $X$ be a mean-zero process with stationary kernel, i.e. there is a function $\tilde{c} : [0,
     1] \to \mathbb{R}$ such that $\mathbb{E}[X(s) X(t)] = \tilde{c}(|s - t|)$ for all $s, t$. Then
     $X$ satisfies the ICA if and only if $2 (\tilde{c}(0) - \tilde{c})$ satisfies the ICA.
@@ -45,7 +45,7 @@
     satisfies the ICA using $2 (\tilde{c}(0) - \tilde{c})$ as $f$.
 \end{proof}
 
-\begin{proposition}\label{prop:lipschitz}
+\begin{proposition}\label{prop:Lipschitz}
     Let $f$ be a nonnegative function on $[0, 1]$ that is non-decreasing in a neighborhood of $0$.
     Let $X$ be a $f$-H\"older continuous process. If $f$ satisfies the ICA, then there exists a
     non-decreasing continuous function $\phi$ on $[0, 1]$ with $\phi(0) = 0$, which depends only on
@@ -59,8 +59,8 @@
     The claim follows directly from Theorem 2.3 in \cite{hahn1977} with $r = 2$.
 \end{proof}
 
-\begin{corollary}\label{cor:lipschitz}
-    Consider the setup from Proposition \ref{prop:lipschitz}. Let $X_1, \dots, X_n$ be a random
+\begin{corollary}\label{cor:Lipschitz}
+    Consider the setup from Proposition \ref{prop:Lipschitz}. Let $X_1, \dots, X_n$ be a random
     sample with the same distribution as $X$. From the proposition we know there exists random
     variables $A_1, \dots, A_n$ and non-decreasing functions $\phi_1, \dots, \phi_n$ such that the
     claim holds. Define $\phi = \max_{i = 1}^n \phi_i$. Then, $\phi$ is non-decreasing, continuous,
@@ -70,7 +70,7 @@
     \]
 \end{corollary}
 \begin{proof}
-    The claim follows directly from Proposition \ref{prop:lipschitz}, the fact that $X_i$ has the
+    The claim follows directly from Proposition \ref{prop:Lipschitz}, the fact that $X_i$ has the
     same distribution as $X$, and the fact that the maximum of continuous non-decreasing functions
     is continuous and non-decreasing.
 \end{proof}
@@ -91,7 +91,7 @@
 \end{proof}
 
 
-\begin{theorem}\label{thm:uniform-convergence-kernel}
+\begin{theorem}\label{thm:UniformConvergenceKernel}
     Let $X_1, \dots, X_n$ be independent mean-zero processes following the same distribution as $X$.
     Suppose that $X$ satisfies the ICA and that $\mathbb{E}[\sup_{t \in [0, 1]} X(t)^2] < \infty$. Let
     $\hat{c}_n(s, t) = 1/n \sum_{i = 1}^n X_i(s) X_i(t)$ denote the sample covariance. Then,
@@ -118,7 +118,7 @@
     $\limsup_n B_n < \infty$.
 
     Pick $s, t, s', t' \in [0, 1]$ arbitrary and let $A_1, \dots, A_n$ and $\phi$ be the random
-    variables and function from Proposition \ref{prop:lipschitz} and Corollary \ref{cor:lipschitz},
+    variables and function from Proposition \ref{prop:Lipschitz} and Corollary \ref{cor:Lipschitz},
     respectively. We have
     \begin{align}
         |\frac{1}{n} &\sum_{i = 1}^n X_i(s) X_i(t) - \frac{1}{n} \sum_{i = 1}^n X_i(s') X_i(t')| \\
@@ -174,8 +174,8 @@
     \]
 \end{proof}
 
-\begin{theorem}\label{thm:uniform-convergence-kernel-derivative}
-    Consider the same setup as in Theorem \ref{thm:uniform-convergence-kernel}. However, now suppose
+\begin{theorem}\label{thm:UniformConvergenceKernelDerivative}
+    Consider the same setup as in Theorem \ref{thm:UniformConvergenceKernel}. However, now suppose
     that $X'$ satisfies the ICA and that $\mathbb{E}[\sup_{t \in [0, 1]} X'(t)^2] < \infty$. Then,
     \begin{align}
         || \partial_{1, 2}\hat{c}_n - \partial_{1, 2}c ||_\infty &\overset{a.s.}{\to} 0 \,.
@@ -184,7 +184,7 @@
 \begin{proof}
     Note that $\partial_{1, 2} \hat{c}_n(s, t) = \frac{1}{n} \sum_{i = 1}^n X_i'(s) X_i'(t)$, and
     $\partial_{1, 2} c(s, t) = \mathbb{E}[X'(s) X'(t)]$. And thus the proof follows using the same
-    arguments as in the proof of Theorem \ref{thm:uniform-convergence-kernel}.
+    arguments as in the proof of Theorem \ref{thm:UniformConvergenceKernel}.
 \end{proof}
 
 
