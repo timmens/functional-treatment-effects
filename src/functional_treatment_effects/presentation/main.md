@@ -1,8 +1,8 @@
 ---
 paginate: true
 marp: true
-author: Tim Mensinger and Dominik Liebl
-description: "Statistische Woche 2022: FAIR CAUSAL INFERENCE FOR FUNCTIONAL DATA"
+author: Tim Mensinger
+description: "Brown Bag Seminar"
 theme: custom
 ---
 
@@ -11,41 +11,74 @@ theme: custom
 ==================================================================================== -->
 <!-- paginate: false -->
 
-## CAUSAL INFERENCE FOR <br/> FUNCTIONAL DATA
+## CAUSAL INFERENCE WITH <br/> FUNCTIONAL DATA
 
-#### Case Study
+<img src="figures/bgse_logo.jpg" width=200 style="position:absolute;bottom:2em;left:2em">
 
-Statistische Woche; Muenster, 2022
-<br/>
+<p style="position:absolute;top:8em;left:2em;text-align:left;">
+<b>BGSE Brown Bag Seminar</b>
+<br>
+December, 2022
+</p>
 
-#### Tim Mensinger & Dominik Liebl
-University of Bonn
+<p style="position:absolute;top:15em;right:2em;text-align:right;">
+<b>Tim Mensinger</b>
+<br>
+Institute of Finance & Statistics
+</p>
+
 
 ---
+### Contents
+
+<span style="text-align:center;font-size:50px;position:relative;top:-0.5em;">
+
+Introduction
+<hr style="width:50%;margin-top:50px">
+
+Theory
+<hr style="width:50%;margin-top:50px">
+
+Application
+
+</span>
+
+
 <!-- paginate: true -->
+---
 ### Motivation
 
-![bg right 75%](../graphs/foot_side_view_red_nike.jpg)
+<img src="figures/running-footstrike-types.jpg" style="display:block;margin-left:auto;margin-right:auto;width:80%;margin-top:-1em;">
 
-- Foot striking patterns:
-    - forefoot vs heel
-
-* Consider one metric: Force on ankle joints
-
-* ***What's the (causal) effect of forefoot running on ankle joint loading?***
+* ***What's the causal effect of forefoot running on the force acting on the ankle joint?***
 
 ---
+
 ### Data
 
-<img src="../../../bld/figures/presentation/data.png" width=1100>
+Explain where the data is from, how I cleaned it, what the limitations of the data are,
+how I could imagine to use the multivariate features, use knee joint loading, etc.
+
+
+---
+
+![bg contain](../../../bld/figures/presentation/data.png)
+
+Make another slide with mean difference, and bullet points why this is not a good estimator of the causal effect.
+
 
 ---
 ### Data Structure
+
+Make this two columnA
 
 |                   |                      |                  |
 |-------------------|----------------------|------------------|
 |**Outcomes**       |**Controls**          |**Treatment**     |
 |$Y_i \in C^1[0, 1]$|$X_i \in \mathbb{R}^p$|$W_i \in \{0, 1\}$|
+
+* Random sample:
+    - IID $\{(Y_i, X_i, W_i) : i = 1,\dots, n\}$
 
 * Potential Outcomes:
     - $Y_i(1), Y_i(0) \in C^1[0, 1]$
@@ -54,63 +87,33 @@ University of Bonn
 
     * SUTVA: $Y_i = Y_i(W_i)$
 
-<!-- Say: Controls may be functionsl -->
-
 
 ---
 ### Object of Interest
 
 - Average treatment effect function:
-    <br/>
     $$\tau(t) = \mathbb{E}[Y_i(1)(t) - Y_i(0)(t)]$$
 
     for $t \in [0, 1]$
 
-* Identification under **unconfoundness** (and **overlap**):
+* Identification under **unconfoundness**:
+
     - $(Y_i(1), Y_i(0)) \perp\hspace{-3mm}\perp W_i | X_i$
-    * $\eta < \mathbb{P}[W_i = 1 | X_i] < 1 - \eta$
 
 ---
-### Plan
+### Inference
 
-1. **Find relevant control variables**
-    - Utilize causal graphs from *causal inference* literature
-2. **Choose a suitable estimator**
-    - Utilize methods from *econometrics* literature
-3. **Construct confidence bands**
-    - Utilize results from *functional data* literature
+- Estimator $\hat{\tau}_n$ of $\tau$
+
+* Simultaneous $\alpha$-confidence band:
+    $$SCB_n : [0, 1] \to (\ell(t), u(t)) \subset \mathbb{R}$$
+    such that
+    $$\lim_{n \to \infty} \mathbb{P}[\hat{\tau}_n(t) \in SCB_n(t)] \geqslant 1 - \alpha$$
 
 
 ---
-<!-- _class: lead -->
-# Find relevant control variables
+### Literature Review
 
----
-<!-- _class: split -->
-### Directed Acyclical Graph
-
-
-<div class=leftcol>
-
-<br/>
-<img src="../../../bld/figures/presentation/dag.png" width=550>
-
-</div>
-<div class=rightcol>
-
-<br/>
-
-- For $t \in [0, 1]$
-
-- Structure may change with $t$
-
-- Set of variables used for prediction of outcome and treatment may differ
-
-</div>
-
----
-<!-- _class: lead -->
-# Choose a suitable estimator
 
 ---
 ### Augmented Inverse Propensity Score Weighting
@@ -140,9 +143,6 @@ Requirements:
 - Cross-fitting
 - Nuisance functions are estimated at $o_{P}(n^{-1/4})$ rates
 
----
-<!-- _class: lead -->
-# Construct Confidence Bands
 
 ---
 ### Simultaneous Confidence Bands
@@ -186,18 +186,23 @@ And, we can construct an estimator of $c$ and its partial derivatives that is un
 
 <img src="../../../bld/figures/presentation/data.png" width=1100>
 
+
+---
+### Simulations
+
 ---
 ### Result
 
 ![bg vertical 95%](../../../bld/figures/presentation/doubly_robust.png)
 
 ---
-### Contact
+### Resources
 
-![bg right 75%](../graphs/functional-treatment-effects-repo-qr.png)
+<u>GitHub</u>
 
-<br/>
+- **Project**: [timmens/functional-treatment-effects](https://github.com/timmens/functional-treatment-effects)
+<span style="font-size:30px;">Contains: This presentation, the working paper, and code to reproduce the analysis.</span>
 
-- Email:<br/>[tmensinger@uni-bonn.de](mailto:tmensinger@uni-bonn.de)
-<br/>
-- GitHub:<br/>[timmens/functional-treatment-effects](https://github.com/timmens/functional-treatment-effects)
+
+- **Package**: [timmens/fte](https://github.com/timmens/fte)
+<span style="font-size:30px;">Python package that can be used to estimate functional treatment effects and corresponding simultaneous confidence bands.</span>
