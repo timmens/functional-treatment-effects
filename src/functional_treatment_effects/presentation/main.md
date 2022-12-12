@@ -4,6 +4,7 @@ marp: true
 author: Tim Mensinger
 description: "Brown Bag Seminar"
 theme: custom
+math: mathjax
 ---
 
 <!-- ===================================================================================
