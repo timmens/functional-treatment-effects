@@ -104,16 +104,17 @@ Make this two columnA
 ---
 ### Inference
 
-- Estimator $\hat{\tau}_n$ of $\tau$
-
-* Simultaneous $\alpha$-confidence band:
+- Simultaneous $\alpha$-confidence band:
     $$SCB_n : [0, 1] \to (\ell(t), u(t)) \subset \mathbb{R}$$
     such that
-    $$\lim_{n \to \infty} \mathbb{P}[\hat{\tau}_n(t) \in SCB_n(t)] \geqslant 1 - \alpha$$
+    $$\mathbb{P}[\, \forall t \in [0, 1]: \tau(t) \in SCB_n(t)] \geqslant 1 - \alpha$$
 
+- Illustration of confidence band here
 
 ---
 ### Literature Review
+
+Only if time.
 
 
 ---
@@ -131,30 +132,48 @@ $$
     - $\small \hat{\mathbb{P}}[W_i=1|X_i]$
 
 ---
-### Properties and Requirements
+### Requirements
 
-Properties of $\hat{\tau}(t)$:
+- Cross-fitting: estimate nuisance functions on other sample than $\hat{\tau}$
 
-- Consistent for $\tau(t)$
-- Doubly robust
-- Semiparametric efficient
-
-Requirements:
-
-- Cross-fitting
-- Nuisance functions are estimated at $o_{P}(n^{-1/4})$ rates
+- Nuisance functions are estimated uniformly at $o_{P}(n^{-1/4})$ rates
 
 
 ---
 ### Simultaneous Confidence Bands
 
-- **To Show:**
-    - Asymptotically Gaussian estimator of $\tau$
-    - Uniformly consistent estimator of its covariance kernel $c$
-    (and its 1st and 2nd partial derivatives)
+- Liebl and Reimherr (2021):
 
-- Liebl and Reimherr (2022):
+    - Asymptotically Gaussian estimator of $\tau$
+
+    - Uniformly consistent estimator of its covariance kernel $c$
+    (and of its 1st and 2nd partial derivatives)
+
     - **Get:** Simultaneous confidence bands
+
+---
+
+**Lemma:** Assume process $X(t)$ and its derivative process $X'(t)$ fulfill
+- wlog $\mathbb{E}[X(t)] = 0$
+- $\mathbb{E}[\sup_t X(t)^2] < \infty$ and $\mathbb{E}[\sup_t X'(t)^2] < \infty$
+- $X(t)$ has $C^2[0, 1]$ sample paths almost surely
+- $X$ and $X'$ fulfill condition **IC**
+
+**Then:** for a random sample $X_1, \dots, X_n \sim X$
+- $n^{-1/2} \sum_i X_i \overset{d}{\to} \mathcal{GP}(0, c)$ in $C^1[0, 1]$
+- $||\hat{c} - c ||_\infty \overset{a.e.}{\to} 0$ and $||\partial_{1, 2}\hat{c} - \partial_{1, 2}c||_\infty \overset{a.e.}{\to} 0$
+- *Using Hahn (1977) and Davidson (2021)*
+
+---
+### Integral Condition
+
+Require $f$ such that
+
+$\mathbb{E}[(X(s) - X(t))^2] \leqslant f(|s-t|)$
+
+for small $|s-t|$ and
+
+$\int_0^\infty y^{-3/2} \sqrt{f(y)} \, \mathrm{d}y < \infty$
 
 ---
 ### Theorem
@@ -182,17 +201,16 @@ And, we can construct an estimator of $c$ and its partial derivatives that is un
 
 * Show that $\hat{c}$ and its derivatives converge uniformly
 
----
-### Application
-
-<img src="../../../bld/figures/presentation/data.png" width=1100>
-
 
 ---
 ### Simulations
 
+Only if time.
+
 ---
 ### Result
+
+Combine this plot with raw data.
 
 ![bg vertical 95%](../../../bld/figures/presentation/doubly_robust.png)
 
