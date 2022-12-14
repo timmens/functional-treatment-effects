@@ -7,6 +7,13 @@ from functional_treatment_effects.plotting.plotting import plot_data_presentatio
 from functional_treatment_effects.plotting.plotting import plot_df_with_time_axis
 from functional_treatment_effects.plotting.plotting import plot_doubly_robust_band
 from functional_treatment_effects.plotting.plotting import plot_functional_sample
+from functional_treatment_effects.plotting.plotting import plot_scb_illustration
+
+
+@pytask.mark.produces(BLD.joinpath("figures", "scb_illustration.png"))
+def task_plot_scb_illustration(produces):
+    fig = plot_scb_illustration()
+    fig.write_image(produces)
 
 
 @pytask.mark.depends_on(

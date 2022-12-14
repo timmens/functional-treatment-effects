@@ -57,36 +57,43 @@ Application
 
 ### Data
 
+<p style="color:#FF0000";>
 Explain where the data is from, how I cleaned it, what the limitations of the data are,
 how I could imagine to use the multivariate features, use knee joint loading, etc.
+</p>
 
 
 ---
 
 ![bg contain](../../../bld/figures/presentation/data.png)
 
-Make another slide with mean difference, and bullet points why this is not a good estimator of the causal effect.
-
 
 ---
 ### Data Structure
 
-Make this two columnA
+<span style="position:absolute;top:4em;left:2em;">
 
-|                   |                      |                  |
-|-------------------|----------------------|------------------|
-|**Outcomes**       |**Controls**          |**Treatment**     |
-|$Y_i \in C^1[0, 1]$|$X_i \in \mathbb{R}^p$|$W_i \in \{0, 1\}$|
+- **Outcomes**:
+    - $Y_i \in C^2[0, 1]$
+- **Controls:**
+    - $X_i \in \mathbb{R}^p$
+- **Treatment:**
+    - $W_i \in \{0, 1\}$
+</span>
 
-* Random sample:
-    - IID $\{(Y_i, X_i, W_i) : i = 1,\dots, n\}$
+<span style="position:absolute;top:0em;left:15em;">
 
-* Potential Outcomes:
+* **Random sample:**
+    - $\{(Y_i, X_i, W_i) : i = 1,\dots, n\}$
+
+* **Potential Outcomes:**
     - $Y_i(1), Y_i(0) \in C^1[0, 1]$
 
     * $Y_i = W_i Y_i(1) + (1 - W_i) Y_i(0)$
 
     * SUTVA: $Y_i = Y_i(W_i)$
+
+</span>
 
 
 ---
@@ -104,17 +111,24 @@ Make this two columnA
 ---
 ### Inference
 
+<span style="position:relative;top:-1em;">
+
 - Simultaneous $\alpha$-confidence band:
     $$SCB_n : [0, 1] \to (\ell(t), u(t)) \subset \mathbb{R}$$
     such that
     $$\mathbb{P}[\, \forall t \in [0, 1]: \tau(t) \in SCB_n(t)] \geqslant 1 - \alpha$$
+</span>
 
-- Illustration of confidence band here
+<span style="position:absolute;top:11em;left:8em;">
+<img src="../../../bld/figures/scb_illustration.png" width=700 height=300>
+</span>
 
 ---
 ### Literature Review
 
+<p style="color:#FF0000";>
 Only if time.
+</p>
 
 
 ---
@@ -134,38 +148,47 @@ $$
 ---
 ### Requirements
 
-- Cross-fitting: estimate nuisance functions on other sample than $\hat{\tau}$
+- **Cross-fitting:**
+    - Estimate nuisance functions on hold-out sample
 
-- Nuisance functions are estimated uniformly at $o_{P}(n^{-1/4})$ rates
+- **Rates**:
+    - Nuisance functions are estimated uniformly at $o_{P}(n^{-1/4})$ rates
 
+- **Overlap:**
+    - $\eta < \mathbb{P}[W_i|X_i=x]< 1 - \eta$ for some $\eta > 0$
 
 ---
 ### Simultaneous Confidence Bands
 
-- Liebl and Reimherr (2021):
+- Liebl and Reimherr (2021) requiremen:
 
     - Asymptotically Gaussian estimator of $\tau$
 
     - Uniformly consistent estimator of its covariance kernel $c$
     (and of its 1st and 2nd partial derivatives)
+<br>
 
-    - **Get:** Simultaneous confidence bands
+* Other approaches: e.g., Telschow & Schwartzmann (2022)
 
 ---
 
 **Lemma:** Assume process $X(t)$ and its derivative process $X'(t)$ fulfill
-- wlog $\mathbb{E}[X(t)] = 0$
+- $\mathbb{E}[X(t)] = 0$
 - $\mathbb{E}[\sup_t X(t)^2] < \infty$ and $\mathbb{E}[\sup_t X'(t)^2] < \infty$
 - $X(t)$ has $C^2[0, 1]$ sample paths almost surely
 - $X$ and $X'$ fulfill condition **IC**
 
 **Then:** for a random sample $X_1, \dots, X_n \sim X$
 - $n^{-1/2} \sum_i X_i \overset{d}{\to} \mathcal{GP}(0, c)$ in $C^1[0, 1]$
-- $||\hat{c} - c ||_\infty \overset{a.e.}{\to} 0$ and $||\partial_{1, 2}\hat{c} - \partial_{1, 2}c||_\infty \overset{a.e.}{\to} 0$
+- $||\hat{c} - c ||_\infty \overset{a.s.}{\to} 0$ and $||\partial_{1, 2}\hat{c} - \partial_{1, 2}c||_\infty \overset{a.s.}{\to} 0$
 - *Using Hahn (1977) and Davidson (2021)*
 
 ---
 ### Integral Condition
+
+<p style="color:#FF0000";>
+Graph missing.
+</p>
 
 Require $f$ such that
 
@@ -176,16 +199,18 @@ for small $|s-t|$ and
 $\int_0^\infty y^{-3/2} \sqrt{f(y)} \, \mathrm{d}y < \infty$
 
 ---
-### Theorem
+### Conjecture
 
-Under *regularity conditions* on the continuity and differentiability of functions and distributions of the functional errors
+- $Y_i(w)$ fulfills the conditions of Lemma 1
+- Overlap: $\eta < \mathbb{P}[W_i|X_i=x]< 1 - \eta$ for some $\eta > 0$
+- $\hat{\mathbb{E}}, \hat{\mathbb{P}}$ converge fast enough (uniformly over $t$ and $x$)
 
-
+Then,
 $$
-\sqrt{n}(\hat{\tau}  - \tau) \overset{d}{\longrightarrow} \mathcal{GP}(0, c).
+\sqrt{n}(\hat{\tau}  - \tau) \overset{d}{\longrightarrow} \mathcal{GP}(0, c),
 $$
 
-And, we can construct an estimator of $c$ and its partial derivatives that is uniformly consistent.
+and, we can estimate $c$ and its partial derivatives uniformly consistent.
 
 ---
 ### Proof Outline
@@ -205,12 +230,16 @@ And, we can construct an estimator of $c$ and its partial derivatives that is un
 ---
 ### Simulations
 
-Only if time.
+<p style="text-align:center;font-size:50px;position:relative;top:3em;">
+<b>Mhhh...</b>
+</p>
 
 ---
 ### Result
 
+<p style="color:#FF0000";>
 Combine this plot with raw data.
+</p>
 
 ![bg vertical 95%](../../../bld/figures/presentation/doubly_robust.png)
 

@@ -8,6 +8,7 @@ dependencies:
   - python==3.10
   - ipython
   - pip
+  - jupyterlab
 
   # Computation
   - numpy

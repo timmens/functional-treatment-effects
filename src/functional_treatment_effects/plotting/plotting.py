@@ -1,7 +1,50 @@
 import matplotlib.pyplot as plt
 import networkx as nx
+import numpy as np
 import plotly.express as px
 from plotly import graph_objs as go
+
+
+def plot_scb_illustration():
+    x = np.linspace(0, 1, num=100)
+
+    effect = np.sin(2 * np.pi * x) + 3 * x
+
+    lower = effect - 0.75 * (1 + x)
+    upper = effect + 0.75 * (1 + x)
+
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(
+            x=x,
+            y=upper,
+            line={"width": 0.5, "color": "steelblue"},
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=x,
+            y=lower,
+            fill="tonexty",
+            line={"width": 0.5, "color": "steelblue"},
+        )
+    )
+    fig.update_layout(
+        xaxis_title=None,
+        yaxis_title=None,
+        font={"size": 25},
+        xaxis={
+            "showticklabels": False,
+        },
+        yaxis={
+            "showticklabels": False,
+        },
+        template="simple_white",
+        margin={"l": 0, "r": 0, "t": 0, "b": 0},
+        showlegend=False,
+    )
+    fig.add_trace(go.Scatter(x=x, y=effect, line_color="goldenrod", line_width=4))
+    return fig
 
 
 def plot_doubly_robust_band(df):
@@ -49,6 +92,12 @@ def plot_data_presentation(data, indicator):
 
     data = data.merge(indicator)
 
+    forefoot = (
+        data.query("strike_indicator == 'Forefoot'").groupby("time")["moment"].mean()
+    )
+    heel = data.query("strike_indicator == 'Heel'").groupby("time")["moment"].mean()
+    time = heel.to_frame().index
+
     fig = px.line(
         data,
         x="time",
@@ -60,6 +109,15 @@ def plot_data_presentation(data, indicator):
             "Heel": "goldenrod",
             "Forefoot": "steelblue",
         },
+    )
+
+    fig = fig.add_trace(
+        go.Scattergl(
+            x=time, y=forefoot, line_color="black", line_width=3, showlegend=False
+        )
+    )
+    fig = fig.add_trace(
+        go.Scattergl(x=time, y=heel, line_color="black", line_width=3, showlegend=False)
     )
 
     fig = fig.update_traces(opacity=0.5)
