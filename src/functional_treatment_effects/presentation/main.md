@@ -57,10 +57,19 @@ Application
 
 ### Data
 
-<p style="color:#FF0000";>
-Explain where the data is from, how I cleaned it, what the limitations of the data are,
-how I could imagine to use the multivariate features, use knee joint loading, etc.
-</p>
+- Willwacher et al. (2014)
+
+- 120 subjects
+
+- Preferred running style
+
+- Force measured on ankles and knees
+
+    - Newton meter per kilogram (Nm/Kg)
+
+    - Sign determines rotational direction
+
+    - Higher values $\approx$ higher force
 
 
 ---
@@ -127,7 +136,7 @@ how I could imagine to use the multivariate features, use knee joint loading, et
 ### Literature Review
 
 <p style="color:#FF0000";>
-Only if time.
+Only if time. CHERNOZHUKOV!!!
 </p>
 
 

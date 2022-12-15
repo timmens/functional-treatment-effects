@@ -12,7 +12,7 @@ def plot_ic_illustration():
         "linear": lambda x: 1 - x,
         "quadratic": lambda x: 1 - x**2,
         "matern": lambda x: np.exp(-x),
-        "rational_qudratic": lambda x: (1 + x**2) ** (-1),
+        "rational_quadratic": lambda x: (1 + x**2) ** (-1),
         "exponential": lambda x: np.exp(-(x**2)),
     }
     formulae = {
@@ -77,8 +77,8 @@ def plot_ic_illustration():
     )
     fig.add_annotation(
         x=0.45,
-        y=funcs["exponential"](0.45, 2),
-        text=formulae["exp2"],
+        y=funcs["exponential"](0.45),
+        text=formulae["exponential"],
         textangle=20,
         showarrow=True,
         ax=-20,
