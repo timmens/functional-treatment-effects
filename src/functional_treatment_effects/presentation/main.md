@@ -160,7 +160,7 @@ $$
 ---
 ### Simultaneous Confidence Bands
 
-- Liebl and Reimherr (2021) requiremen:
+- Liebl and Reimherr (2021) requirement:
 
     - Asymptotically Gaussian estimator of $\tau$
 
@@ -186,10 +186,6 @@ $$
 ---
 ### Integral Condition
 
-<p style="color:#FF0000";>
-Graph missing.
-</p>
-
 Require $f$ such that
 
 $\mathbb{E}[(X(s) - X(t))^2] \leqslant f(|s-t|)$
@@ -197,6 +193,10 @@ $\mathbb{E}[(X(s) - X(t))^2] \leqslant f(|s-t|)$
 for small $|s-t|$ and
 
 $\int_0^\infty y^{-3/2} \sqrt{f(y)} \, \mathrm{d}y < \infty$
+
+<span style="position:absolute;top:2em;right:3.5em;">
+    <img src="../../../bld/figures/ic_illustration.png" width=500>
+</span>
 
 ---
 ### Conjecture
@@ -237,11 +237,7 @@ and, we can estimate $c$ and its partial derivatives uniformly consistent.
 ---
 ### Result
 
-<p style="color:#FF0000";>
-Combine this plot with raw data.
-</p>
-
-![bg vertical 95%](../../../bld/figures/presentation/doubly_robust.png)
+![bg vertical 99%](../../../bld/figures/presentation/doubly_robust.png)
 
 ---
 ### Resources

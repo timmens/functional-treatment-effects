@@ -1,8 +1,109 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
+import pandas as pd
 import plotly.express as px
 from plotly import graph_objs as go
+
+
+def plot_ic_illustration():
+
+    funcs = {
+        "linear": lambda x: 1 - x,
+        "quadratic": lambda x: 1 - x**2,
+        "matern": lambda x: np.exp(-x),
+        "rational_qudratic": lambda x: (1 + x**2) ** (-1),
+        "exponential": lambda x: np.exp(-(x**2)),
+    }
+    formulae = {
+        "linear": r"$1 - x$",
+        "quadratic": r"$1 - x^2$",
+        "matern": r"$\exp(-|x|)$",
+        "rational_quadratic": r"$(1 + x^2)^{-1}$",
+        "exponential": r"$\exp(-|x|^2)$",
+    }
+
+    x = np.linspace(0, 0.5, num=100)
+    data = pd.DataFrame({"x": x})
+
+    for name, f in funcs.items():
+        data[name] = f(x)
+
+    data = data.melt(id_vars="x", var_name="type")
+
+    fig = px.line(data, x="x", y="value", color="type", width=400)
+
+    fig = fig.update_layout(
+        xaxis_title=None,
+        yaxis_title=None,
+        xaxis={
+            "showticklabels": False,
+        },
+        yaxis={
+            "showticklabels": False,
+        },
+        template="simple_white",
+        margin={"l": 0, "r": 0, "t": 0, "b": 0},
+        showlegend=False,
+    )
+
+    fig.add_annotation(
+        x=0.2,
+        y=funcs["linear"](0.2) - 0.015,
+        text=formulae["linear"],
+        textangle=50,
+        showarrow=False,
+    )
+    fig.add_annotation(
+        x=0.35,
+        y=funcs["quadratic"](0.35) - 0.015,
+        text=formulae["quadratic"],
+        textangle=40,
+        showarrow=False,
+    )
+    fig.add_annotation(
+        x=0.25,
+        y=funcs["matern"](0.25) + 0.025,
+        text=formulae["matern"],
+        textangle=40,
+        showarrow=False,
+    )
+    fig.add_annotation(
+        x=0.35,
+        y=funcs["rational_quadratic"](0.35) + 0.025,
+        text=formulae["rational_quadratic"],
+        textangle=30,
+        showarrow=False,
+    )
+    fig.add_annotation(
+        x=0.45,
+        y=funcs["exponential"](0.45, 2),
+        text=formulae["exp2"],
+        textangle=20,
+        showarrow=True,
+        ax=-20,
+        ay=70,
+        arrowhead=1,
+    )
+
+    fig.update_annotations(font_size=100)
+    fig.update_traces(line_width=3)
+    fig.update_xaxes(linewidth=2)
+    fig.update_yaxes(linewidth=2)
+
+    fig.add_trace(go.Scatter(x=x, y=funcs["quadratic"](x), line_width=0))
+    fig.add_trace(
+        go.Scatter(
+            x=x,
+            y=funcs["matern"](x),
+            line_width=0,
+            fill="tonexty",
+            fillpattern_shape="/",
+            fillpattern_fillmode="replace",
+        )
+    )
+
+    return fig
 
 
 def plot_scb_illustration():
@@ -47,9 +148,11 @@ def plot_scb_illustration():
     return fig
 
 
-def plot_doubly_robust_band(df):
+def plot_doubly_robust_band(df, other):
 
     fig = go.Figure()
+
+    fig.add_trace(go.Scatter(x=df.index, y=other, line={"width": 2, "color": "gray"}))
     fig.add_trace(
         go.Scatter(
             x=df.index.to_list() + df.index.to_list()[::-1],
@@ -59,7 +162,7 @@ def plot_doubly_robust_band(df):
         )
     )
     fig.add_trace(
-        go.Scatter(x=df.index, y=df.estimate, line_color="goldenrod", line_width=4)
+        go.Scatter(x=df.index, y=df.estimate, line_color="goldenrod", line_width=5)
     )
 
     fig.add_annotation(x=8, y=0.3, text=r"$Nm/Kg$", showarrow=False, font_size=22)

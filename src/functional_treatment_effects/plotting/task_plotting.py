@@ -7,7 +7,14 @@ from functional_treatment_effects.plotting.plotting import plot_data_presentatio
 from functional_treatment_effects.plotting.plotting import plot_df_with_time_axis
 from functional_treatment_effects.plotting.plotting import plot_doubly_robust_band
 from functional_treatment_effects.plotting.plotting import plot_functional_sample
+from functional_treatment_effects.plotting.plotting import plot_ic_illustration
 from functional_treatment_effects.plotting.plotting import plot_scb_illustration
+
+
+@pytask.mark.produces(BLD.joinpath("figures", "ic_illustration.png"))
+def task_plot_ic_illustration(produces):
+    fig = plot_ic_illustration()
+    fig.write_image(produces)
 
 
 @pytask.mark.produces(BLD.joinpath("figures", "scb_illustration.png"))
@@ -68,11 +75,19 @@ def task_plot_data_presentation(depends_on, produces):
     fig.write_image(produces, width=1400, height=700)
 
 
-@pytask.mark.depends_on(BLD.joinpath("models", "doubly_robust.csv"))
+@pytask.mark.depends_on(
+    {
+        "doubly_robust": BLD.joinpath("models", "doubly_robust.csv"),
+        "linear_model": BLD.joinpath("models", "linear_model_estimate.pickle"),
+    }
+)
 @pytask.mark.produces(BLD.joinpath("figures", "presentation", "doubly_robust.png"))
 def task_plot_doubly_robust_band(depends_on, produces):
-    df = pd.read_csv(depends_on, index_col="time")
-    fig = plot_doubly_robust_band(df)
+    linear_estimate = pd.read_pickle(depends_on["linear_model"])[
+        "slopes"
+    ].values.flatten()
+    df = pd.read_csv(depends_on["doubly_robust"], index_col="time")
+    fig = plot_doubly_robust_band(df, other=linear_estimate)
     fig.write_image(produces, width=1400, height=700)
 
 
