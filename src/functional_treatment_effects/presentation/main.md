@@ -96,7 +96,7 @@ Application
     - $\{(Y_i, X_i, W_i) : i = 1,\dots, n\}$
 
 * **Potential Outcomes:**
-    - $Y_i(1), Y_i(0) \in C^1[0, 1]$
+    - $Y_i(1), Y_i(0) \in C^2[0, 1]$
 
     * $Y_i = W_i Y_i(1) + (1 - W_i) Y_i(0)$
 
@@ -187,7 +187,8 @@ $$
 ---
 ### Integral Condition
 
-Require $f$ such that
+Require non-decreasing $f$
+such that $f \geqslant 0$ and
 
 $\mathbb{E}[(X(s) - X(t))^2] \leqslant f(|s-t|)$
 
