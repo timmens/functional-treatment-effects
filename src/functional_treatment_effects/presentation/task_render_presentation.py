@@ -19,7 +19,7 @@ dependencies = {f.name: f for f in src_figures + bld_figures}
 
 @pytask.mark.markdown(
     script=SRC.joinpath("presentation", "main.md"),
-    document=BLD.joinpath("presentation", "main.pdf"),
+    document=BLD.joinpath("presentation", "main.html"),
     css=SRC.joinpath("presentation", "custom.scss"),
     compilation_steps=cs.marp(options=["--html", "--allow-local-files"]),
 )

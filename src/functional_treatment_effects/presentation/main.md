@@ -133,14 +133,6 @@ Application
 </span>
 
 ---
-### Literature Review
-
-<p style="color:#FF0000";>
-Only if time. CHERNOZHUKOV!!!
-</p>
-
-
----
 ### Augmented Inverse Propensity Score Weighting
 
 $$
